@@ -1,0 +1,42 @@
+[profile.default]
+src = 'src'
+out = 'out'
+libs = ['lib']
+solc = "0.8.16"
+fs_permissions = [{ access = "read-write", path = "./"}, { access = "read-write", path = "./records/"}]
+# gas_reports = ["Contract_Name"]
+ffi = true
+
+# See more config options https://github.com/foundry-rs/foundry/tree/master/config
+
+[fmt]
+# see prettier
+
+[rpc_endpoints]
+anvil = "http://localhost:8545/"
+goerli = "https://ethereum-goerli-rpc.allthatnode.com"
+sepolia = "https://ethereum-sepolia-rpc.allthatnode.com"
+mainnet = "https://ethereum-mainnet-rpc.allthatnode.com"
+polygon = "https://polygon-mainnet-rpc.allthatnode.com:8545"
+mumbai = "https://polygon-testnet-rpc.allthatnode.com:8545"
+
+[etherscan]
+goerli = { key = "${ETHERSCAN_KEY}" }
+sepolia = { key = "${ETHERSCAN_KEY}" }
+
+[fuzz]
+runs = 256
+max_test_rejects = 65536
+seed = '0x3e8'
+dictionary_weight = 40
+include_storage = true
+include_push_bytes = true
+
+[invariant]
+runs = 256
+depth = 15
+fail_on_revert = false
+call_override = false
+dictionary_weight = 80
+include_storage = true
+include_push_bytes = true

@@ -1,0 +1,49 @@
+name: Slither Analysis
+
+on: [push]
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+      - run: npm install
+
+      - name: get version of OZ package.json in lib
+        id: oz_lib_version
+        uses: zoexx/github-action-json-file-properties@release
+        with:
+          file_path: "lib/openzeppelin-contracts/package.json"
+      - name: get version of OZ package.json in node modules
+        id: oz_node_version
+        uses: zoexx/github-action-json-file-properties@release
+        with:
+          file_path: "node_modules/@openzeppelin/contracts/package.json"
+      - name: OZ versions in lib & node modules are same
+        run: |
+          if [[ ${{ steps.oz_lib_version.outputs.version }} == ${{ steps.oz_node_version.outputs.version }} ]]; then
+          echo "version tag is ${{steps.oz_lib_version.outputs.version}}"
+          else
+          echo "foundry lib version ${{steps.oz_lib_version.outputs.version}}"
+          echo "node module version ${{steps.oz_node_version.outputs.version}}"
+          exit 1
+          fi
+
+      - name: OpenZeppelin contracts Latest Version
+        id: openzeppelin_contracts_version
+        uses: Bruce17/ghaction-package-latest-version@v1.1.2
+        with:
+          package: "@openzeppelin/contracts"
+          language: node
+
+      - run: |
+          echo "OpenZeppelin contracts: last ${{steps.openzeppelin_contracts_version.outputs.latestVersion}} - used ${{steps.oz_node_version.outputs.version}}"
+
+      - name: Run Slither
+        uses: crytic/slither-action@v0.3.0
+        with:
+          fail-on: all
+          target: 'src/'
