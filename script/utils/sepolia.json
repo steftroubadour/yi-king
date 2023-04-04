@@ -1,0 +1,11 @@
+{
+  "sepolia": {
+    "contracts": {
+      "NFTMetadataImage": "0xC280da6d100Aa279480694601C62D42fbe6685c0",
+      "Random": "0x25376b91deb3a9B7DDb387D6B5aAB97fa9192E87"
+    },
+    "initialSetup": {
+      "deployer": "0x45f6e37A97aA1C6b852FBf3581C3a3730eAA7145"
+    }
+  }
+}
