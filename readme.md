@@ -31,12 +31,23 @@ draw will be save on-chain in an NFT
 * image is read from previous contract
 * must have a specific tokenURI to retrieve specific image version
 
-#### Marketing contract
+#### Affiliation contract
 
-To share benefits with affiliated
+To share benefits from mint with affiliated
 
 * add/remove affiliate member
 * member has address and percent retribution in basis point (bp)
+
+## Contracts addresses
+
+| Chain                                | ChainId  | NFT | Random | Image | Affiliation |
+|--------------------------------------|----------|-----|--------|-------|-------------|
+| Ethereum Testnet Sepolia             | 11155111 | 0x  | 0x     | 0x    | 0x          |
+| Polygon Testnet Mumbai               | 80001    | 0x  | 0x     | 0x    | 0x          |
+| Polygon Mainnet                      | 137      | 0x  | 0x     | 0x    | 0x          |
+| Nitro Goerli Rollup Testnet Arbitrum | 421613   | 0x  | 0x     | 0x    | 0x          |
+| Arbitrum One Mainnet                 | 42161    | 0x  | 0x     | 0x    | 0x          |
+| other                                | X        | 0x  | 0x     | 0x    | 0x          |
 
 ## Random draw, first hexagram
 
@@ -59,7 +70,7 @@ usage of on-chain VRF like Chainlink VRF is not used because it is not necessary
 
 ## Mint the NFT
 
-To save draw for eternity, we mint an NFT
+To save draw, pseudo & question for eternity, we mint an NFT
 
 ### pseudo & question
 
@@ -67,3 +78,11 @@ There is no on-chain solution to encrypt data. Therefore, we can’t save an on-
 will be saved clearly.
 
 ![nft_image](img/nft_image.png)
+
+1. Add more detail about what your blockchain implementation does and how it works. This will help potential users
+   understand what your project is all about and how it can benefit them.
+
+2. Include more information about the technology you’re using to build your blockchain implementation. This will help
+   other developers understand how your project works and how they can contribute to it.
+
+3. Consider adding some screenshots or diagrams to help illustrate how your blockchain implementation works.

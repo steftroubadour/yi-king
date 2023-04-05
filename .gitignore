@@ -18,5 +18,8 @@ docs/
 # node
 node_modules
 
+# private
+svg
+
 # IDE
 .idea
