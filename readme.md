@@ -6,7 +6,7 @@ A blockchain implementation of I Ching divination.
 
 [https://en.wikipedia.org/wiki/I_Ching](https://en.wikipedia.org/wiki/I_Ching)
 
-![Yi Jing](img\yijing.png)
+![Yi Jing](/img/yijing.png)
 
 ## Functionalities
 
