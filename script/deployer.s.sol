@@ -27,8 +27,8 @@ contract Deployer is Script, Recorder, Test {
         vm.startBroadcast(privateKey);
         delete privateKey;
 
-        _0_deployNFTMetadataImage();
-        _1_deployRandom();
+        _0_deployYiJingImagesGenerator();
+        _1_deployYiJingRandom();
         vm.stopBroadcast();
 
         // write record of deployed contracts

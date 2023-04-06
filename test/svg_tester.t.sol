@@ -5,13 +5,13 @@ pragma solidity ^0.8.16;
 import "forge-std/Test.sol";
 import "@openzeppelin/contracts/utils/math/Math.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
-import "src/NFTMetadataImage.sol";
+import "src/YiJingImagesGenerator.sol";
 
 contract Metadata_TEST is Test {
-    NFTMetadataImage image;
+    YiJingImagesGenerator image;
 
     function setUp() public {
-        image = new NFTMetadataImage();
+        image = new YiJingImagesGenerator();
     }
 
     function _getLastNBits(uint256 x, uint256 n) internal pure returns (uint256) {
@@ -33,18 +33,18 @@ contract Metadata_TEST is Test {
         return _getRangeOfBits(x, from, to) >> (from - 1);
     }
 
-    function isOld(uint8 value) internal pure returns (bool) {
+    function _isOld(uint8 value) internal pure returns (bool) {
         return value >= 2;
     }
 
-    function isYin(uint8 value) internal pure returns (bool) {
+    function _isYin(uint8 value) internal pure returns (bool) {
         return value % 2 == 0;
     }
 
     function getTrait(
         uint8[6] memory lines,
         uint8 n
-    ) internal pure returns (bool isOld, bool isYin) {
+    ) internal pure returns (bool isOld_, bool isYin_) {
         return (lines[n - 1] >= 2, lines[n - 1] % 2 == 0);
     }
 
@@ -64,26 +64,6 @@ contract Metadata_TEST is Test {
                 isYin ? (isOld ? "old yin" : "new yin") : (isOld ? "old yang" : "new yang")
             );
         }
-        emit log_named_string("result svg", image.getImageData(result));
-
-        /*emit log_string("from");
-        for (uint8 i = 1; i <= 6; i++) {
-            (isOld, isYin) = getTrait(from6Bits, i);
-            emit log_named_string(
-                string.concat("line ", vm.toString(i)),
-                isYin ? (isOld ? "old yin" : "new yin") : (isOld ? "old yang" : "new yang")
-            );
-        }
-        emit log_named_uint("from", image.getNumber(from6Bits));
-
-        emit log_string("to");
-        for (uint8 i = 1; i <= 6; i++) {
-            (isOld, isYin) = getTrait(to6Bits, i);
-            emit log_named_string(
-                string.concat("line ", vm.toString(i)),
-                isYin ? (isOld ? "old yin" : "new yin") : (isOld ? "old yang" : "new yang")
-            );
-        }
-        emit log_named_uint("to", image.getNumber(to6Bits));*/
+        emit log_named_string("result svg", image.getNftImage(result));
     }
 }

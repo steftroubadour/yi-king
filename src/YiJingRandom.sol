@@ -3,7 +3,7 @@ pragma solidity 0.8.18;
 
 // Add other contract call option
 // Add chainlink VRF option
-contract Random {
+contract YiJingRandom {
     // Be careful to pass a seed value that differ with little variation
     // Example:
     // seed = abi.encode(name, question) is not enough

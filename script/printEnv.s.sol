@@ -19,7 +19,10 @@ contract printEnv is Recorder, Test {
         Contracts memory c = abi.decode(readRecordKey(".contracts"), (Contracts));
 
         // contract address
-        vm.writeLine(envPath, string.concat("NFTMetadataImage:", c.imageContract.toHexString()));
-        vm.writeLine(envPath, string.concat("Random:", c.imageContract.toHexString()));
+        vm.writeLine(
+            envPath,
+            string.concat("YiJingImagesGenerator:", c.imageContract.toHexString())
+        );
+        vm.writeLine(envPath, string.concat("YiJingRandom:", c.imageContract.toHexString()));
     }
 }

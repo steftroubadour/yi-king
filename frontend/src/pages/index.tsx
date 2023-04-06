@@ -14,7 +14,7 @@ const { chains, provider } = configureChains(
 );
 
 const { connectors } = getDefaultWallets({
-  appName: "My Yi Jing App",
+  appName: "Yi Jing App",
   chains,
 });
 

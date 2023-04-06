@@ -26,17 +26,17 @@ export default function Hexagrams({ draw }) {
     contracts: [
       {
         ...yiJingImageContract,
-        functionName: "getData",
+        functionName: "getHexagramImageForVariation",
         args: [draw, 0],
       },
       {
         ...yiJingImageContract,
-        functionName: "getData",
+        functionName: "getHexagramImageForVariation",
         args: [draw, 1],
       },
       {
         ...yiJingImageContract,
-        functionName: "getData",
+        functionName: "getHexagramImageForVariation",
         args: [draw, 2],
       },
     ],

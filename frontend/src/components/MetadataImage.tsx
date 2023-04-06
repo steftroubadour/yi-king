@@ -10,7 +10,7 @@ export default function MetadataImage({ draw }) {
   useContractRead({
     address: contractAddress,
     abi: contractAbi,
-    functionName: "getImageData",
+    functionName: "getNftImage",
     args: [draw],
     chainId: foundry.id,
     enabled: draw !== null,

@@ -58,8 +58,8 @@ abstract contract Recorder is Base {
         string memory index = "contractAddr";
         string memory serializedAt;
 
-        serializedAt = index.serialize("NFTMetadataImage", address(imageContract));
-        serializedAt = index.serialize("Random", address(randomContract));
+        serializedAt = index.serialize("YiJingImagesGenerator", address(imageContract));
+        serializedAt = index.serialize("YiJingRandom", address(randomContract));
 
         contracts = serializedAt;
 

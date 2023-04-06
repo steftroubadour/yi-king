@@ -6,7 +6,7 @@ A blockchain implementation of I Ching divination.
 
 [https://en.wikipedia.org/wiki/I_Ching](https://en.wikipedia.org/wiki/I_Ching)
 
-![Yi Jing](/img/yijing.png)
+![Yi Jing](img/yijing.png)
 
 ## Functionalities
 
@@ -17,10 +17,12 @@ The draw result of I Ching divination is store as an NFT
 * image: animated SVG store on-chain (not on IPFS)
 * name & question: not encrypted. Encryption needs an DApp to do it. It can't be made on-chain. 
 Infortunately, we can't use the tx signature(created by private key) in the S Contract to create an encryption Key.
-
+#### image version
+* add version management for image, tokenURI(tokenID, version)
+#### random function is external
+possibility to change `getNumbers()` in a new contract
 #### Support affiliation
 An affiliate must earn revenues publishing
-
 #### Support non custodial wallet
 Add the possibility to new Blockchain users, to create an account, pay with card & have a non-custodial wallet
 see [web3auth.io](https://web3auth.io)

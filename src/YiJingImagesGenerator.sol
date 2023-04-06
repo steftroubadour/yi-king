@@ -4,7 +4,9 @@ pragma solidity 0.8.18;
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/Base64.sol";
 
-contract NFTMetadataImage {
+/// @author Stephane Chaunard <linktr.ee/stephanechaunard>
+/// @title images for Yi Jing App & NFT
+contract YiJingImagesGenerator {
     string constant SVG_DEFS =
         '<defs><radialGradient id="def1"> <stop offset="20%" stop-color="white" /> <stop offset="100%" stop-color="gold" /> </radialGradient> <radialGradient id="GradientReflect" cx="0.5" cy="0.5" r="0.4" fx="0.75" fy="0.75" spreadMethod="reflect"><stop offset="0%" stop-color="red"/><stop offset="100%" stop-color="blue"/></radialGradient></defs>';
     string constant SVG_STYLE =
@@ -31,7 +33,10 @@ contract NFTMetadataImage {
         '<rect id="square" x="-200" y="-240" width="400" height="480" rx="15" ry="15" fill="pink" fill-opacity="0.3" stroke="url(#GradientReflect)" stroke-width="6" stroke-opacity="0.7"/>';
     uint256 constant V_BASE_POSITION = 32;
 
-    function getNewYin(uint8 position) internal pure returns (string memory) {
+    /*////////////////////////////////////////////////////
+                      INTERNALS FUNCTIONS
+    ////////////////////////////////////////////////////*/
+    function _getNewYin(uint8 position) internal pure returns (string memory) {
         return
             string.concat(
                 PATH_BEGIN,
@@ -41,7 +46,7 @@ contract NFTMetadataImage {
             );
     }
 
-    function getNewYang(uint8 position) internal pure returns (string memory) {
+    function _getNewYang(uint8 position) internal pure returns (string memory) {
         return
             string.concat(
                 PATH_BEGIN,
@@ -51,7 +56,7 @@ contract NFTMetadataImage {
             );
     }
 
-    function getOldYin(uint8 position) internal pure returns (string memory) {
+    function _getOldYin(uint8 position) internal pure returns (string memory) {
         return
             string.concat(
                 PATH_BEGIN,
@@ -61,7 +66,7 @@ contract NFTMetadataImage {
             );
     }
 
-    function getOldYang(uint8 position) internal pure returns (string memory) {
+    function _getOldYang(uint8 position) internal pure returns (string memory) {
         return
             string.concat(
                 PATH_BEGIN,
@@ -72,31 +77,34 @@ contract NFTMetadataImage {
             );
     }
 
-    function getTrait(uint8 value, uint8 position) internal pure returns (string memory) {
+    function _getTrait(uint8 value, uint8 position) internal pure returns (string memory) {
         string memory trait;
         if (value == 0) {
-            trait = getNewYin(position);
+            trait = _getNewYin(position);
         } else if (value == 1) {
-            trait = getNewYang(position);
+            trait = _getNewYang(position);
         } else if (value == 2) {
-            trait = getOldYin(position);
+            trait = _getOldYin(position);
         } else {
             assert(value == 3);
-            trait = getOldYang(position);
+            trait = _getOldYang(position);
         }
 
         return string.concat('<g class="', Strings.toString(position + 1), '">', trait, "</g>");
     }
 
-    function getText(uint8[6] memory lines, uint8 variation) internal pure returns (string memory) {
+    function _getText(
+        uint8[6] memory lines,
+        uint8 variation
+    ) internal pure returns (string memory) {
         string memory text;
         if (variation == 0) {
             text = "draw";
         } else if (variation == 1) {
-            text = string.concat("from ", Strings.toString(getNumber(lines)));
+            text = string.concat("from ", Strings.toString(_getNumber(lines)));
         } else {
             assert(variation == 2);
-            text = string.concat("to ", Strings.toString(getNumber(lines)));
+            text = string.concat("to ", Strings.toString(_getNumber(lines)));
         }
 
         return
@@ -109,7 +117,7 @@ contract NFTMetadataImage {
             );
     }
 
-    function getAnimationTransform(string memory params) internal pure returns (string memory) {
+    function _getAnimationTransform(string memory params) internal pure returns (string memory) {
         return
             string.concat(
                 '<animateTransform attributeName="transform" attributeType="XML" ',
@@ -118,64 +126,65 @@ contract NFTMetadataImage {
             );
     }
 
-    function getRotateAnimation(
+    function _getRotateAnimation(
         string memory from,
         string memory to
     ) internal pure returns (string memory) {
         return
-            getAnimationTransform(
+            _getAnimationTransform(
                 string.concat('type="rotate" from="', from, ' 0 0" to="', to, ' 0 0"')
             );
     }
 
-    function getScaleAnimation(string memory values) internal pure returns (string memory) {
+    function _getScaleAnimation(string memory values) internal pure returns (string memory) {
         return
-            getAnimationTransform(
+            _getAnimationTransform(
                 string.concat('type="scale" calcMode="linear" values="', values, '" additive="sum"')
             );
     }
 
-    function getAnimations(uint8 variation) internal pure returns (string memory) {
+    function _getAnimations(uint8 variation) internal pure returns (string memory) {
         if (variation == 1)
             return
                 string.concat(
-                    getRotateAnimation("-120", "240"),
-                    getScaleAnimation("1;2;3;2;1;0.5;1")
+                    _getRotateAnimation("-120", "240"),
+                    _getScaleAnimation("1;2;3;2;1;0.5;1")
                 );
         if (variation == 2)
             return
                 string.concat(
-                    getRotateAnimation("-240", "120"),
-                    getScaleAnimation("1;0.5;1;2;3;2;1")
+                    _getRotateAnimation("-240", "120"),
+                    _getScaleAnimation("1;0.5;1;2;3;2;1")
                 );
         assert(variation == 0);
-        return string.concat(getRotateAnimation("0", "360"), getScaleAnimation("3;2;1;0.5;1;2;3"));
+        return
+            string.concat(_getRotateAnimation("0", "360"), _getScaleAnimation("3;2;1;0.5;1;2;3"));
     }
 
-    function getThe6Bits(
+    function _getThe6Bits(
         uint8[6] memory lines,
         uint8 variation
     ) internal pure returns (uint8[6] memory) {
-        if (variation == 1) return getFrom6Bits(lines);
-        if (variation == 2) return getTo6Bits(lines);
+        if (variation == 1) return _getFrom6Bits(lines);
+        if (variation == 2) return _getTo6Bits(lines);
         assert(variation == 0);
         return lines;
     }
 
-    function getGroups(uint8[6] memory lines) internal pure returns (string[3] memory) {
+    function _getGroups(uint8[6] memory lines) internal pure returns (string[3] memory) {
         //slither-disable-next-line uninitialized-local
         string[3] memory svg;
         for (uint8 variation = 0; variation < 3; variation++) {
-            uint8[6] memory the6Bits = getThe6Bits(lines, variation);
+            uint8[6] memory the6Bits = _getThe6Bits(lines, variation);
             svg[variation] = "<g>";
             for (uint8 id; id < 6; id++) {
-                svg[variation] = string.concat(svg[variation], getTrait(the6Bits[5 - id], 5 - id));
+                svg[variation] = string.concat(svg[variation], _getTrait(the6Bits[5 - id], 5 - id));
             }
 
             svg[variation] = string.concat(
                 svg[variation],
-                getText(the6Bits, variation),
-                getAnimations(variation),
+                _getText(the6Bits, variation),
+                _getAnimations(variation),
                 "</g>"
             );
         }
@@ -184,7 +193,7 @@ contract NFTMetadataImage {
     }
 
     function _getSVG(uint8[6] memory lines) internal pure returns (string memory) {
-        string[3] memory groups = getGroups(lines);
+        string[3] memory groups = _getGroups(lines);
         string memory svg = string.concat(
             '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" viewBox="-256 -256 512 512">',
             SVG_DEFS,
@@ -198,36 +207,7 @@ contract NFTMetadataImage {
         return string.concat(svg, TAIJITU, YI_JING, YI_JING_ANIMATION, "</svg>");
     }
 
-    function getData(
-        uint8[6] memory lines,
-        uint8 variation
-    ) external pure returns (uint256, string memory) {
-        uint8[6] memory the6Bits = getThe6Bits(lines, variation);
-        string memory svg = string.concat(
-            '<svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" viewBox="-23 -76 46 56">',
-            SVG_ONE_STYLE
-        );
-        for (uint8 id = 0; id < 6; id++) {
-            svg = string.concat(svg, getTrait(the6Bits[5 - id], 5 - id));
-        }
-
-        svg = string.concat(svg, "</svg>");
-
-        // svg Data
-        svg = string.concat("data:image/svg+xml;base64,", Base64.encode(abi.encodePacked(svg)));
-
-        return (variation == 0 ? 0 : getNumber(the6Bits), svg);
-    }
-
-    function getImageData(uint8[6] memory lines) external pure returns (string memory) {
-        return
-            string.concat(
-                "data:image/svg+xml;base64,",
-                Base64.encode(abi.encodePacked(_getSVG(lines)))
-            );
-    }
-
-    function getFrom6Bits(uint8[6] memory lines) internal pure returns (uint8[6] memory) {
+    function _getFrom6Bits(uint8[6] memory lines) internal pure returns (uint8[6] memory) {
         //slither-disable-next-line uninitialized-local
         uint8[6] memory from6Bits;
         for (uint8 i = 0; i < 6; i++) {
@@ -237,7 +217,7 @@ contract NFTMetadataImage {
         return from6Bits;
     }
 
-    function getTo6Bits(uint8[6] memory lines) internal pure returns (uint8[6] memory) {
+    function _getTo6Bits(uint8[6] memory lines) internal pure returns (uint8[6] memory) {
         //slither-disable-next-line uninitialized-local
         uint8[6] memory to6Bits;
         for (uint8 i = 0; i < 6; i++) {
@@ -249,7 +229,7 @@ contract NFTMetadataImage {
 
     // Use the King Wen sequence
     // https://oeis.org/A102241
-    function getNumber(uint8[6] memory a6Bits) internal pure returns (uint256) {
+    function _getNumber(uint8[6] memory a6Bits) internal pure returns (uint256) {
         // Inverse of the King Wen sequence
         uint8[64] memory from6BitsToNumber = [
             2,
@@ -326,5 +306,46 @@ contract NFTMetadataImage {
             (a6Bits[0] << 0);
 
         return from6BitsToNumber[n];
+    }
+
+    /*/////////////////////////////////////////////////////
+                      EXTERNALS FUNCTIONS
+    //////////////////////////////////////////////////// */
+
+    /// Retrieve base64 hexagram image for a variation
+    /// @param lines an hexagram is composed by 6 lines defined by a number in the range [0;3]
+    /// @param variation 0 is 'Draw' hexagram, 1 is for 'From' hexagram and 2 is for 'To' hexagram
+    /// @return uint256 hexagram number
+    /// @return string svg base64 image
+    function getHexagramImageForVariation(
+        uint8[6] memory lines,
+        uint8 variation
+    ) external pure returns (uint256, string memory) {
+        uint8[6] memory the6Bits = _getThe6Bits(lines, variation);
+        string memory svg = string.concat(
+            '<svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" viewBox="-23 -76 46 56">',
+            SVG_ONE_STYLE
+        );
+        for (uint8 id = 0; id < 6; id++) {
+            svg = string.concat(svg, _getTrait(the6Bits[5 - id], 5 - id));
+        }
+
+        svg = string.concat(svg, "</svg>");
+
+        // svg Data
+        svg = string.concat("data:image/svg+xml;base64,", Base64.encode(abi.encodePacked(svg)));
+
+        return (variation == 0 ? 0 : _getNumber(the6Bits), svg);
+    }
+
+    /// Retrieve base64 image for NFT
+    /// @param lines an hexagram is composed by 6 lines defined by a number in the range [0;3]
+    /// @return string svg base64 image
+    function getNftImage(uint8[6] memory lines) external pure returns (string memory) {
+        return
+            string.concat(
+                "data:image/svg+xml;base64,",
+                Base64.encode(abi.encodePacked(_getSVG(lines)))
+            );
     }
 }
