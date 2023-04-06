@@ -18,11 +18,11 @@ contract Random {
     ) external view returns (uint256[] memory) {
         uint256[] memory numbers = new uint256[](length);
         bytes32 word = keccak256(
-            abi.encode(block.timestamp, block.difficulty, block.number, block.basefee, tx.gasprice)
+            abi.encode(block.timestamp, block.prevrandao, block.number, block.basefee, tx.gasprice)
         );
         uint256 seedLength = seed.length;
 
-        for (uint256 count; count < length; count++) {
+        for (uint256 count = 0; count < length; count++) {
             word = keccak256(abi.encode(word, seed[count % seedLength]));
             numbers[count] = (uint256(word) % (max - min + 1)) + min;
         }

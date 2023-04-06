@@ -163,8 +163,9 @@ contract NFTMetadataImage {
     }
 
     function getGroups(uint8[6] memory lines) internal pure returns (string[3] memory) {
+        //slither-disable-next-line uninitialized-local
         string[3] memory svg;
-        for (uint8 variation; variation < 3; variation++) {
+        for (uint8 variation = 0; variation < 3; variation++) {
             uint8[6] memory the6Bits = getThe6Bits(lines, variation);
             svg[variation] = "<g>";
             for (uint8 id; id < 6; id++) {
@@ -190,7 +191,7 @@ contract NFTMetadataImage {
             SVG_STYLE,
             CARD
         );
-        for (uint8 variation; variation < 3; variation++) {
+        for (uint8 variation = 0; variation < 3; variation++) {
             svg = string.concat(svg, groups[variation]);
         }
 
@@ -206,7 +207,7 @@ contract NFTMetadataImage {
             '<svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" viewBox="-23 -76 46 56">',
             SVG_ONE_STYLE
         );
-        for (uint8 id; id < 6; id++) {
+        for (uint8 id = 0; id < 6; id++) {
             svg = string.concat(svg, getTrait(the6Bits[5 - id], 5 - id));
         }
 
@@ -227,8 +228,9 @@ contract NFTMetadataImage {
     }
 
     function getFrom6Bits(uint8[6] memory lines) internal pure returns (uint8[6] memory) {
+        //slither-disable-next-line uninitialized-local
         uint8[6] memory from6Bits;
-        for (uint8 i; i < 6; i++) {
+        for (uint8 i = 0; i < 6; i++) {
             from6Bits[i] = lines[i] % 2;
         }
 
@@ -236,8 +238,9 @@ contract NFTMetadataImage {
     }
 
     function getTo6Bits(uint8[6] memory lines) internal pure returns (uint8[6] memory) {
+        //slither-disable-next-line uninitialized-local
         uint8[6] memory to6Bits;
-        for (uint8 i; i < 6; i++) {
+        for (uint8 i = 0; i < 6; i++) {
             to6Bits[i] = lines[i] >= 2 ? (lines[i] + 1) % 2 : lines[i] % 2;
         }
 
