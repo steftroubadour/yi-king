@@ -221,7 +221,7 @@ contract YiJingImagesGenerator {
         //slither-disable-next-line uninitialized-local
         uint8[6] memory to6Bits;
         for (uint8 i = 0; i < 6; i++) {
-            to6Bits[i] = lines[i] >= 2 ? (lines[i] + 1) % 2 : lines[i] % 2;
+            to6Bits[i] = (lines[i] == 0 || lines[i] == 3) ? (lines[i] + 1) % 2 : lines[i] % 2;
         }
 
         return to6Bits;

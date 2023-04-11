@@ -1,4 +1,4 @@
-[![codecov](https://codecov.io/gh/steftroubadour/foundry-template/branch/main/graph/badge.svg?token=DRHMFJHS9Y)](https://codecov.io/gh/steftroubadour/foundry-template)
+[![codecov](https://codecov.io/gh/steftroubadour/yi-king/branch/main/graph/badge.svg?token=m5EOdrKkz8)](https://codecov.io/gh/steftroubadour/yi-king)
 
 # Yi Jing 易经
 
