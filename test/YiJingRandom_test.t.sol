@@ -7,7 +7,6 @@ import { YiJingRandom } from "src/YiJingRandom.sol";
 import { Math } from "@openzeppelin/contracts/utils/math/Math.sol";
 import { Strings } from "@openzeppelin/contracts/utils/Strings.sol";
 import { Bits } from "lib_personal/Bits.sol";
-import { Strings as Strings2 } from "lib_personal/Strings.sol";
 import { Arrays } from "lib_personal/Arrays.sol";
 
 contract YiJingRandom_test is BaseTest {

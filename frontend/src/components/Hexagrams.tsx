@@ -22,6 +22,14 @@ export default function Hexagrams({ draw }) {
     chainId: foundry.id,
   };
 
+/*  interface Contract {
+    address: string;
+    abi: string;
+    chainId: number;
+    functionName: string;
+    args: Array<any | number>;
+  }*/
+
   useContractReads({
     contracts: [
       {
@@ -66,12 +74,12 @@ export default function Hexagrams({ draw }) {
               </Center>
             </CardHeader>
             <CardBody p={"none"}>
-              <Image src={sources[index][1]} alt="" width={"100%"} />
+              <Image src={sources![index][1]} alt="" width={"100%"} />
             </CardBody>
             <CardFooter>
               <Center w="100%" h="40px" bg="blue" color="white">
                 <Box as="span" fontWeight="bold" fontSize="lg">
-                  {JSON.parse(sources[index][0]) === 0 ? " " : JSON.parse(sources[index][0])}
+                  {JSON.parse(sources![index][0]) === 0 ? " " : JSON.parse(sources![index][0])}
                 </Box>
               </Center>
             </CardFooter>

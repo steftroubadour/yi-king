@@ -5,6 +5,8 @@ pragma solidity ^0.8.16;
 import { Test } from "forge-std/Test.sol";
 
 abstract contract BaseTest is Test {
+    bool internal debug;
+
     // Values are in the range [0; 3]
     // corresponding to the Yi Jing coins method values range [6; 9] adding +6
 

@@ -3,9 +3,8 @@
 pragma solidity ^0.8.16;
 
 import { Math } from "@openzeppelin/contracts/utils/math/Math.sol";
-import { Test } from "forge-std/Test.sol";
+import { Test, console } from "forge-std/Test.sol";
 import { TestHelper } from "./TestHelper.sol";
-import { Strings } from "../Strings.sol";
 
 abstract contract RandomHelper is Test, TestHelper {
     function _getRandomNumber(uint256 min, uint256 max) internal returns (uint256) {
@@ -15,15 +14,15 @@ abstract contract RandomHelper is Test, TestHelper {
         // and other times, it returns bytes with the number in it as "0x59" !
         // To resolve that, we do two cases and insure that the returned number is in the right range.
 
-        //!\ May be enlarged shuf range and after use bound with the right range
-
-        //!\ For a better distribution of small random numbers see BaseTest::_mintRandomTokensByUsers L44
-        // to test
+        // For a better distribution of small random numbers
+        // If needed, enlarge the shuf range
+        // Random number will be bounded in the right range before return
+        uint256 max2 = (max - min < 100) ? 100 * max : max;
 
         string[] memory inputs = new string[](4);
         inputs[0] = "shuf";
         inputs[1] = "-i";
-        inputs[2] = string.concat(vm.toString(min), "-", vm.toString(max));
+        inputs[2] = string.concat(vm.toString(min), "-", vm.toString(max2));
         inputs[3] = "-n1";
 
         bytes memory result = vm.ffi(inputs);
@@ -39,20 +38,28 @@ abstract contract RandomHelper is Test, TestHelper {
 
         uint256 randomNumber = areAllBytesNumbers
             ? vm.parseUint(string(result)) // - result is bytes of digits , we use 'string(result)' ex: 0x313435 => "145"
-            : vm.parseUint(Strings.remove0x(vm.toString(result))); // - result is not, we use '_remove0x(vm.toString(result))' ex: 0x75 => "0x75" => "75"
+            : vm.parseUint(_remove0x(vm.toString(result))); // - result is not, we use '_remove0x(vm.toString(result))' ex: 0x75 => "0x75" => "75"
 
         // insure that the returned number is in the right range.
         return bound2(randomNumber, min, max);
     }
 
+    // According to this test: test_getDifferentRandomNumbers_withSmallRange
+    // Requirements
+    // n <= 20;
+    // max >= min + n + 3
     function _getDifferentRandomNumbers(
         uint256 n,
         uint256 min,
         uint256 max
     ) internal returns (uint256[] memory) {
+        assert(n <= 20 && max >= min + n + 3);
         uint256[] memory tempNumbers = new uint256[](n);
 
-        //_writeNewLine("test.txt", "_getDifferentRandomNumbers()");
+        // To be sure have large range enough for n random numbers
+        // Enlarge the shuf range when 10 * n < max - min
+        // Random number will be bounded
+        uint max2 = (10 * n < max - min) ? 100 * max : max;
 
         for (uint256 i; i < n; i++) {
             uint256 randomNumber;
@@ -60,28 +67,9 @@ abstract contract RandomHelper is Test, TestHelper {
 
             while (isAlreadyPresent) {
                 isAlreadyPresent = false;
-                randomNumber = _getRandomNumber(min, max);
-                /*_writeNewLine(
-                    "test.txt",
-                    string.concat(
-                        "randomNumber for i=",
-                        vm.toString(i),
-                        " : ",
-                        vm.toString(randomNumber)
-                    )
-                );*/
-                //console.log("randomNumber");
-                //console.log(randomNumber);
+                randomNumber = bound2(_getRandomNumber(min, max2), min, max);
+
                 for (uint256 j; j < i; j++) {
-                    /*_writeNewLine(
-                        "test.txt",
-                        string.concat(
-                            "tempNumbers[",
-                            vm.toString(j),
-                            "] = ",
-                            vm.toString(tempNumbers[j])
-                        )
-                    );*/
                     if (randomNumber == tempNumbers[j]) {
                         isAlreadyPresent = true;
                         break;

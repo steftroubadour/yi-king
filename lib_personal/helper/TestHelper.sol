@@ -4,9 +4,9 @@ pragma solidity ^0.8.16;
 
 import { Math } from "@openzeppelin/contracts/utils/math/Math.sol";
 import { TestBase } from "forge-std/Test.sol";
-import { Strings } from "../Strings.sol";
+import { StringHelper } from "./StringHelper.sol";
 
-abstract contract TestHelper is TestBase {
+abstract contract TestHelper is TestBase, StringHelper {
     function _bound2(uint256 x, uint256 min, uint256 max) internal pure virtual returns (uint256) {
         if (x >= min && x <= max) return x;
 
@@ -68,8 +68,8 @@ abstract contract TestHelper is TestBase {
             line = vm.readLine("./foundry.toml");
             if (
                 bytes(line).length > 0 &&
-                !Strings.areStringsEquals(Strings.slice(1, 1, line), "#") &&
-                Strings.areStringsEquals(line, profileName)
+                !_areStringsEquals(_slice(1, 1, line), "#") &&
+                _areStringsEquals(line, profileName)
             ) isGoodProfile = true;
 
             lineNumber++;
@@ -81,14 +81,14 @@ abstract contract TestHelper is TestBase {
             line = vm.readLine("./foundry.toml");
             if (
                 bytes(line).length > 0 &&
-                !Strings.areStringsEquals(Strings.slice(1, 1, line), "#") &&
-                !Strings.areStringsEquals(Strings.slice(1, 1, line), "[") &&
-                Strings.areStringsEquals(Strings.slice(1, bytes(varName).length, line), varName)
+                !_areStringsEquals(_slice(1, 1, line), "#") &&
+                !_areStringsEquals(_slice(1, 1, line), "[") &&
+                _areStringsEquals(_slice(1, bytes(varName).length, line), varName)
             ) isGoodLine = true;
 
             lineNumber++;
         }
 
-        return vm.parseUint(Strings.slice(bytes(varName).length + 4, bytes(line).length, line));
+        return vm.parseUint(_slice(bytes(varName).length + 4, bytes(line).length, line));
     }
 }
