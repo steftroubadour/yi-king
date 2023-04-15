@@ -1,3 +1,4 @@
 ignore:
-  - "script"
-  - "test"
+  - "script/**/*"
+  - "test/utils/BaseTest.t.sol"
+  - "test/*"

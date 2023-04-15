@@ -23,7 +23,7 @@ contract BaseTest_ is BaseTest {
     }
 
     function getNew(uint8 value) public pure returns (uint8) {
-        return getNew(value);
+        return _getNew(value);
     }
 }
 
