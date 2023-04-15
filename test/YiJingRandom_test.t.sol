@@ -2,12 +2,10 @@
 
 pragma solidity ^0.8.16;
 
-import { BaseTest } from "test/utils/BaseTest.sol";
+import { BaseTest, Arrays, Bits } from "test/utils/BaseTest.sol";
 import { YiJingRandom } from "src/YiJingRandom.sol";
 import { Math } from "@openzeppelin/contracts/utils/math/Math.sol";
 import { Strings } from "@openzeppelin/contracts/utils/Strings.sol";
-import { Bits } from "lib_personal/Bits.sol";
-import { Arrays } from "lib_personal/Arrays.sol";
 
 contract YiJingRandom_test is BaseTest {
     YiJingRandom random;
@@ -40,8 +38,8 @@ contract YiJingRandom_test is BaseTest {
         assertFalse(Arrays.areEquals(numbers1, numbers2));
 
         // to compare arrays, we convert them in a number...
-        uint256 number1 = Arrays.toNumber(numbers1);
-        uint256 number2 = Arrays.toNumber(numbers2);
+        uint256 number1 = Arrays.toUint(numbers1);
+        uint256 number2 = Arrays.toUint(numbers2);
 
         assertTrue(number1 != number2);
 

@@ -2,12 +2,10 @@
 
 pragma solidity ^0.8.16;
 
-import { BaseTest } from "test/utils/BaseTest.sol";
+import { BaseTest, Arrays, Bits } from "test/utils/BaseTest.sol";
 import { YiJingImagesGenerator } from "src/YiJingImagesGenerator.sol";
 import { Math } from "@openzeppelin/contracts/utils/math/Math.sol";
 import { Strings } from "@openzeppelin/contracts/utils/Strings.sol";
-import { Bits } from "lib_personal/Bits.sol";
-import { StringHelper } from "lib_personal/helper/StringHelper.sol";
 
 // To test internal functions
 contract YiJingImagesGenerator_ is YiJingImagesGenerator {
@@ -72,7 +70,7 @@ contract YiJingImagesGenerator_internals_test is BaseTest {
     }
 }
 
-contract YiJingImagesGenerator_test is BaseTest, StringHelper {
+contract YiJingImagesGenerator_test is BaseTest {
     YiJingImagesGenerator imagesGenerator;
 
     function setUp() public {
@@ -85,8 +83,8 @@ contract YiJingImagesGenerator_test is BaseTest, StringHelper {
         uint8[6] memory result = [3, 1, 2, 3, 0, 1]; // i.e. [9, 7, 8, 9, 6, 7]
         //emit log_named_string("result svg", image.getNftImage(result));
         string memory nftImage = imagesGenerator.getNftImage(result);
-        assertFalse(_isEmptyString(nftImage));
-        assertEq(_slice(1, 26, nftImage), "data:image/svg+xml;base64,");
+        assertFalse(isEmptyString(nftImage));
+        assertEq(slice(1, 26, nftImage), "data:image/svg+xml;base64,");
     }
 
     function test4getNftImage(uint8[6] memory numbers) public {
@@ -96,8 +94,8 @@ contract YiJingImagesGenerator_test is BaseTest, StringHelper {
 
         //emit log_named_string("result svg", image.getNftImage(result));
         string memory nftImage = imagesGenerator.getNftImage(numbers);
-        assertFalse(_isEmptyString(nftImage));
-        assertEq(_slice(1, 26, nftImage), "data:image/svg+xml;base64,");
+        assertFalse(isEmptyString(nftImage));
+        assertEq(slice(1, 26, nftImage), "data:image/svg+xml;base64,");
     }
 
     function test4getHexagramImageForVariation() public {
@@ -106,8 +104,8 @@ contract YiJingImagesGenerator_test is BaseTest, StringHelper {
         uint hexagramNo;
         for (uint8 variation = 0; variation < 3; variation++) {
             (hexagramNo, image) = imagesGenerator.getHexagramImageForVariation(result, variation);
-            assertFalse(_isEmptyString(image));
-            assertEq(_slice(1, 26, image), "data:image/svg+xml;base64,");
+            assertFalse(isEmptyString(image));
+            assertEq(slice(1, 26, image), "data:image/svg+xml;base64,");
 
             if (variation == 0) assertEq(hexagramNo, 0);
             else if (variation == 1) assertEq(hexagramNo, 38);
@@ -126,7 +124,7 @@ contract YiJingImagesGenerator_test is BaseTest, StringHelper {
         string memory image;
         uint hexagramNo;
         (hexagramNo, image) = imagesGenerator.getHexagramImageForVariation(numbers, variation);
-        assertFalse(_isEmptyString(image));
-        assertEq(_slice(1, 26, image), "data:image/svg+xml;base64,");
+        assertFalse(isEmptyString(image));
+        assertEq(slice(1, 26, image), "data:image/svg+xml;base64,");
     }
 }

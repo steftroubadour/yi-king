@@ -2,11 +2,38 @@
 
 pragma solidity ^0.8.16;
 
-import { BaseTest } from "test/utils/BaseTest.sol";
+import { BaseTest, Arrays, Bits } from "test/utils/BaseTest.sol";
+import { Test } from "forge-std/Test.sol";
 
-contract BaseTest_test is BaseTest {
+contract BaseTest_ is BaseTest {
+    function isOld(uint8 value) public pure returns (bool) {
+        return _isOld(value);
+    }
+
+    function isYin(uint8 value) public pure returns (bool) {
+        return _isYin(value);
+    }
+
+    function getTrait(uint8[6] memory lines, uint8 n) public pure returns (bool, bool) {
+        return _getTrait(lines, n);
+    }
+
+    function getOld(uint8 value) public pure returns (uint8) {
+        return _getOld(value);
+    }
+
+    function getNew(uint8 value) public pure returns (uint8) {
+        return getNew(value);
+    }
+}
+
+contract BaseTest_test is Test {
+    BaseTest_ t;
+
     function setUp() public {
         assertTrue(IS_TEST);
+
+        t = new BaseTest_();
     }
 
     function test__getTrait() public {
@@ -17,7 +44,7 @@ contract BaseTest_test is BaseTest {
         bool isYin;
 
         for (uint8 i = 1; i <= 6; i++) {
-            (isOld, isYin) = _getTrait(result, i);
+            (isOld, isYin) = t.getTrait(result, i);
             assertEq(isOld, expectedIsOld[i - 1]);
             assertEq(isYin, expectedIsYin[i - 1]);
         }
@@ -25,17 +52,17 @@ contract BaseTest_test is BaseTest {
 
     function test__getOld() public {
         uint8 value = 0; // yin
-        assertEq(_getOld(value), 0);
+        assertEq(t.getOld(value), 0);
 
         value = 1; // yang
-        assertEq(_getOld(value), 3);
+        assertEq(t.getOld(value), 3);
     }
 
     function test__getNew() public {
         uint8 value = 0; // yin
-        assertEq(_getNew(value), 2);
+        assertEq(t.getNew(value), 2);
 
         value = 1; // yang
-        assertEq(_getNew(value), 1);
+        assertEq(t.getNew(value), 1);
     }
 }

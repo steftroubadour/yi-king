@@ -3,6 +3,7 @@
   "solc_remaps": [
     "ds-test/=lib/ds-test/src/",
     "forge-std/=lib/forge-std/src/",
+    "test-helpers/=lib/foundry-test-helpers/src/",
     "@=node_modules/@"
   ]
 }
