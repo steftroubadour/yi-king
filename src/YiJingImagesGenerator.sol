@@ -1,12 +1,13 @@
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: MIT
 pragma solidity 0.8.18;
 
-import "@openzeppelin/contracts/utils/Strings.sol";
-import "@openzeppelin/contracts/utils/Base64.sol";
+import { Strings } from "@openzeppelin/contracts/utils/Strings.sol";
+import { Base64 } from "@openzeppelin/contracts/utils/Base64.sol";
+import { Initializable } from "src/utils/Initializable.sol";
 
 /// @author Stephane Chaunard <linktr.ee/stephanechaunard>
 /// @title images for Yi Jing App & NFT
-contract YiJingImagesGenerator {
+contract YiJingImagesGenerator is Initializable {
     string constant SVG_DEFS =
         '<defs><radialGradient id="def1"> <stop offset="20%" stop-color="white" /> <stop offset="100%" stop-color="gold" /> </radialGradient> <radialGradient id="GradientReflect" cx="0.5" cy="0.5" r="0.4" fx="0.75" fy="0.75" spreadMethod="reflect"><stop offset="0%" stop-color="red"/><stop offset="100%" stop-color="blue"/></radialGradient></defs>';
     string constant SVG_STYLE =
@@ -341,11 +342,14 @@ contract YiJingImagesGenerator {
     /// Retrieve base64 image for NFT
     /// @param lines an hexagram is composed by 6 lines defined by a number in the range [0;3]
     /// @return string svg base64 image
-    function getNftImage(uint8[6] memory lines) external pure returns (string memory) {
-        return
+    function getNftImage(
+        uint8[6] memory lines
+    ) external view onlyFromCaller returns (string memory) {
+        return (
             string.concat(
                 "data:image/svg+xml;base64,",
                 Base64.encode(abi.encodePacked(_getSVG(lines)))
-            );
+            )
+        );
     }
 }

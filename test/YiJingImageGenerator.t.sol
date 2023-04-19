@@ -7,7 +7,7 @@ import { YiJingImagesGenerator } from "src/YiJingImagesGenerator.sol";
 import { Math } from "@openzeppelin/contracts/utils/math/Math.sol";
 import { Strings } from "@openzeppelin/contracts/utils/Strings.sol";
 
-// To test internal functions
+// Internal functions
 contract YiJingImagesGenerator_ is YiJingImagesGenerator {
     function getFrom6Bits(uint8[6] memory lines) public pure returns (uint8[6] memory) {
         return _getFrom6Bits(lines);
@@ -23,6 +23,10 @@ contract YiJingImagesGenerator_internals_test is BaseTest {
 
     function setUp() public {
         imagesGenerator = new YiJingImagesGenerator_();
+    }
+
+    function testSetUp() public {
+        //assertEq(caller.getCaller(), A_CONTRACT);
     }
 
     function test4_getFrom6Bits() public {
@@ -74,15 +78,25 @@ contract YiJingImagesGenerator_test is BaseTest {
     YiJingImagesGenerator imagesGenerator;
 
     function setUp() public {
-        imagesGenerator = new YiJingImagesGenerator();
-
         assertTrue(IS_TEST);
+
+        vm.startPrank(DEPLOYER);
+        imagesGenerator = new YiJingImagesGenerator();
+        imagesGenerator.init(A_CONTRACT);
+        vm.stopPrank();
     }
+
+    function testSetUp() public {}
 
     function test4getNftImage() public {
         uint8[6] memory result = [3, 1, 2, 3, 0, 1]; // i.e. [9, 7, 8, 9, 6, 7]
-        //emit log_named_string("result svg", image.getNftImage(result));
+        vm.prank(ANOTHER_CONTRACT);
+        vm.expectRevert("Caller: not good one");
         string memory nftImage = imagesGenerator.getNftImage(result);
+
+        //emit log_named_string("result svg", image.getNftImage(result));
+        vm.prank(A_CONTRACT);
+        nftImage = imagesGenerator.getNftImage(result);
         assertFalse(isEmptyString(nftImage));
         assertEq(slice(1, 26, nftImage), "data:image/svg+xml;base64,");
     }
@@ -93,6 +107,7 @@ contract YiJingImagesGenerator_test is BaseTest {
         }
 
         //emit log_named_string("result svg", image.getNftImage(result));
+        vm.prank(A_CONTRACT);
         string memory nftImage = imagesGenerator.getNftImage(numbers);
         assertFalse(isEmptyString(nftImage));
         assertEq(slice(1, 26, nftImage), "data:image/svg+xml;base64,");

@@ -65,4 +65,13 @@ contract BaseTest_test is Test {
         value = 1; // yang
         assertEq(t.getNew(value), 1);
     }
+
+    function testIsStringContain() public {
+        string memory where = "0;//yin+123";
+        string memory what = "//yin";
+        assertTrue(t.isStringContain(what, where));
+
+        what = "yang";
+        assertFalse(t.isStringContain(what, where));
+    }
 }
