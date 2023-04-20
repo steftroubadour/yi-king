@@ -106,10 +106,6 @@ contract Affiliation_internals_test is BaseTest {
         vm.expectRevert("Caller: not good one");
         affiliation.addCommission(AN_USER, amount);
 
-        vm.prank(A_CONTRACT);
-        vm.expectRevert("Affiliation: not exists");
-        affiliation.addCommission(AN_USER, amount);
-
         vm.prank(DEPLOYER);
         affiliation.add(AN_USER, 300);
 
@@ -135,6 +131,12 @@ contract Affiliation_internals_test is BaseTest {
         vm.prank(A_CONTRACT);
         vm.expectRevert("Affiliation: banned or blocked");
         affiliation.addCommission(AN_USER, amount);
+
+        // affiliate address is not registered
+        uint256 affiliationTotalBalance = affiliation.getTotalBalance();
+        vm.prank(A_CONTRACT);
+        affiliation.addCommission(ANOTHER_USER, amount);
+        assertEq(affiliation.getTotalBalance(), affiliationTotalBalance);
     }
 
     function testWithdraw() public {
@@ -159,10 +161,13 @@ contract Affiliation_internals_test is BaseTest {
         vm.prank(A_CONTRACT);
         affiliation.addCommission(AN_USER, 2 ether);
 
+        uint256 affiliatesTotalBalance = affiliation.getTotalBalance();
         uint balance = affiliation.getData(AN_USER).balance;
         vm.prank(CALLER);
         uint amount = affiliation.withdraw(AN_USER);
         assertEq(amount, balance);
+        assertEq(affiliatesTotalBalance - affiliation.getTotalBalance(), balance);
+        assertEq(affiliation.getData(AN_USER).balance, 0);
 
         vm.prank(DEPLOYER);
         affiliation.toggleBlocked(AN_USER);

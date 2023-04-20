@@ -71,7 +71,32 @@ contract BaseTest_test is Test {
         string memory what = "//yin";
         assertTrue(t.isStringContain(what, where));
 
+        what = "+123";
+        assertTrue(t.isStringContain(what, where));
+
         what = "yang";
         assertFalse(t.isStringContain(what, where));
+    }
+
+    function testGetPositionStringContained() public {
+        string memory where = "0;//yin+123";
+        string memory what = "//yin";
+        assertEq(t.getPositionStringContained(what, where), 3);
+
+        what = "+123";
+        assertEq(t.getPositionStringContained(what, where), 8);
+
+        what = "yang";
+        assertEq(t.getPositionStringContained(what, where), 0);
+    }
+
+    function testFindFirstCharPositionAfter() public {
+        string memory where = "0;//yin+123";
+        string memory letter = "+";
+        uint256 startPosition = 2;
+        assertEq(t.findFirstCharPositionAfter(letter, startPosition, where), 8);
+
+        letter = "g";
+        assertEq(t.findFirstCharPositionAfter(letter, startPosition, where), 0);
     }
 }

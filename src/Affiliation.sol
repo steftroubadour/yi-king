@@ -50,10 +50,9 @@ contract Affiliation is IAffiliation, Initializable {
                       EXTERNALS FUNCTIONS
     ////////////////////////////////////////////////////*/
     // To not block tx, revert must handle by Caller contract
-    function addCommission(
-        address affiliate,
-        uint256 amount
-    ) external onlyFromCaller exists(affiliate) canDo(affiliate) {
+    function addCommission(address affiliate, uint256 amount) external onlyFromCaller {
+        if (!_isExist(affiliate)) return;
+        require(!_isBanned(affiliate) && !_isBlocked(affiliate), REVERT_CANT);
         _affiliates[affiliate].balance += (_affiliates[affiliate].bps * amount) / 10000;
         _totalBalance += _affiliates[affiliate].balance;
     }
@@ -70,6 +69,7 @@ contract Affiliation is IAffiliation, Initializable {
     {
         uint256 balance = _affiliates[affiliate].balance;
         _affiliates[affiliate].balance = 0;
+        _totalBalance -= balance;
         return balance;
     }
 

@@ -55,6 +55,14 @@ contract YiJingMetadataGenerator_test is BaseTest {
         metadataGenerator = new YiJingMetadataGenerator(address(imagesGenerator));
         imagesGenerator.init(address(metadataGenerator));
         vm.stopPrank();
+
+        OWNER = DEPLOYER;
+    }
+
+    function testSetImagesGenerator() public {
+        vm.prank(OWNER);
+        metadataGenerator.setImagesGenerator(A_CONTRACT);
+        assertEq(metadataGenerator.imagesGenerator(), address(A_CONTRACT));
     }
 
     function testGetJsonMetadata() public {

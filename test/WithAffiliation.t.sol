@@ -13,6 +13,10 @@ contract WithAffiliation_ is WithAffiliation {
     function addAffiliateCommission(address affiliate, uint256 amount) public {
         return _addAffiliateCommission(affiliate, amount);
     }
+
+    function setAffiliation(address affiliation) public {
+        _setAffiliation(affiliation);
+    }
 }
 
 contract WithAffiliation_test is BaseTest {
@@ -33,6 +37,11 @@ contract WithAffiliation_test is BaseTest {
     function testSetUp() public {
         assertEq(withAffiliation.getAffiliation(), address(affiliation));
         assertEq(affiliation.getCaller(), address(withAffiliation));
+    }
+
+    function testSetAffiliation() public {
+        withAffiliation.setAffiliation(A_CONTRACT);
+        assertEq(withAffiliation.getAffiliation(), address(A_CONTRACT));
     }
 
     function testAddAffiliateCommission() public {

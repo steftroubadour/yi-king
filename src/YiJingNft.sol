@@ -7,45 +7,36 @@ import { Pausable } from "src/utils/Pausable.sol";
 import { WithAffiliation, IAffiliation } from "src/WithAffiliation.sol";
 
 /// @author Stephane Chaunard <linktr.ee/stephanechaunard>
-/// @title Affiliation contract
+/// @title Yi Jing Saver NFT Collection based on erc721 contract
+// Generalities for these NFT tokens as storage utilities which price can't be speculative.
+// Due to high gas price on Ethereum and usage of lower gas solutions like StarkWare,
+// It's better to mint again an NFT than modify or transfer it.
+//
+// To avoid evolution problem, it would be better to choose a Diamond architecture
+// But in our case, we assume that interfaces are efficients,
+// they propose all methods we need and they won't need to evolve,
+// Even if we can upgrade some 'satellites' contracts, their interfaces can be fixed.
+// Upgradable dependant contracts are Affiliation, YiJingMetadataGenerator and YiJingImagesGenerator
+//
 contract YiJingNft is ERC721, IYiJingBase, Pausable, WithAffiliation {
     /*////////////////////////////////////////////////////
                       REVERT REASONS
     ////////////////////////////////////////////////////*/
     string constant REVERT_PAYMENT = "NFT: value too small";
     string constant REVERT_NOT_APPROVED = "NFT: not owner or approved";
-    string constant REVERT_ENCRYPTED = "NFT: encrypted info";
-    string constant REVERT_NOT_ENCRYPTED = "NFT: not encrypted info";
+    string constant REVERT_NOT_OWNER_OF = "NFT: not owner of";
 
-    IYiJingMetadataGenerator _metadataGenerator;
+    address public metadataGenerator;
 
     mapping(uint256 => NftData) private _nftData;
     uint256 private _lastTokenId;
     uint256 public mintPrice;
 
-    /*////////////////////////////////////////////////////
-                        MODIFIERS
-    ////////////////////////////////////////////////////*/
-    modifier validatePayment() {
-        require(msg.value >= mintPrice, REVERT_PAYMENT);
-        _;
-    }
-
-    modifier notEncrypted(uint256 tokenId) {
-        require(!_nftData[tokenId].encrypted, REVERT_ENCRYPTED);
-        _;
-    }
-
-    modifier encrypted(uint256 tokenId) {
-        require(!_nftData[tokenId].encrypted, REVERT_NOT_ENCRYPTED);
-        _;
-    }
-
     constructor(
-        address imagesGenerator,
-        address affiliation
-    ) ERC721("Yi Jing Saver", "YIJING") WithAffiliation(affiliation) {
-        _metadataGenerator = IYiJingMetadataGenerator(imagesGenerator);
+        address metadataGenerator_,
+        address affiliation_
+    ) ERC721("Yi Jing Saver", "YIJING") WithAffiliation(affiliation_) {
+        metadataGenerator = metadataGenerator_;
         setMintPrice(1 ether);
     }
 
@@ -55,10 +46,8 @@ contract YiJingNft is ERC721, IYiJingBase, Pausable, WithAffiliation {
 
     /// Mint
     /// @param nftData nft data
-    function mint(
-        NftData memory nftData,
-        address affiliate
-    ) external payable whenNotPaused validatePayment {
+    function mint(NftData memory nftData, address affiliate) external payable whenNotPaused {
+        require(msg.value >= mintPrice, REVERT_PAYMENT);
         _lastTokenId++;
         _nftData[_lastTokenId] = nftData;
         _addAffiliateCommission(affiliate, msg.value);
@@ -72,82 +61,34 @@ contract YiJingNft is ERC721, IYiJingBase, Pausable, WithAffiliation {
         _burn(tokenId);
     }
 
-    // Transfer
-    // Authorize owner to re-encrypt information before transfer
+    // Modify encrypted info
+    // Authorize owner to re-encrypt NFT information
+    // use cases:
+    // - to improve encryption with a better encryption method.
+    // - before or after a transfer
+    //
     // For example, it can be useful, even if it is not recommended, if it is encrypted with private key account owner.
     // In this case, it is recommended to use an account private key one time
     // i.e. use a wallet derivation one time.
     // This derivation and main address (derivation 0) could be store in
     // ONE TIME because with encrypted messageS from one account, it is possible to calculate private key of this account.
     // It is why, normally, only signature hash is stored, NOT encrypted message.
-    /// @dev See {IERC721-transferFrom}.
-    function transferFrom(
-        address from,
-        address to,
-        uint256 tokenId
-    ) public override notEncrypted(tokenId) {
-        super.transferFrom(from, to, tokenId);
-    }
-
-    function transferFromEncrypted(
-        address from,
-        address to,
+    //
+    function modifyEncryptedInfo(
         uint256 tokenId,
-        string memory encryptedInfo,
-        string memory encryptionHelperMessage
-    ) public encrypted(tokenId) {
-        _modifyEncryptedInfo(tokenId, encryptedInfo, encryptionHelperMessage);
-        super.transferFrom(from, to, tokenId);
-    }
-
-    /// @dev See {IERC721-safeTransferFrom}.
-    function safeTransferFrom(
-        address from,
-        address to,
-        uint256 tokenId
-    ) public override notEncrypted(tokenId) {
-        safeTransferFrom(from, to, tokenId, "");
-    }
-
-    function safeTransferFromEncrypted(
-        address from,
-        address to,
-        uint256 tokenId,
-        string memory encryptedInfo,
-        string memory encryptionHelperMessage
-    ) public encrypted(tokenId) {
-        safeTransferFromEncrypted(from, to, tokenId, encryptedInfo, encryptionHelperMessage, "");
-    }
-
-    /**
-     * @dev See {IERC721-safeTransferFrom}.
-     */
-    function safeTransferFrom(
-        address from,
-        address to,
-        uint256 tokenId,
-        bytes memory data
-    ) public override notEncrypted(tokenId) {
-        super.safeTransferFrom(from, to, tokenId, data);
-    }
-
-    function safeTransferFromEncrypted(
-        address from,
-        address to,
-        uint256 tokenId,
-        string memory encryptedInfo,
-        string memory encryptionHelperMessage,
-        bytes memory data
-    ) public encrypted(tokenId) {
-        _modifyEncryptedInfo(tokenId, encryptedInfo, encryptionHelperMessage);
-        super.safeTransferFrom(from, to, tokenId, data);
+        string memory info,
+        string memory helperMessage
+    ) public {
+        require(ownerOf(tokenId) == _msgSender(), REVERT_NOT_OWNER_OF);
+        _nftData[tokenId].info = info;
+        _nftData[tokenId].encryptionHelperMessage = helperMessage;
     }
 
     /// Retrieve on-the-same-chain Token Metadata
     function tokenURI(uint256 tokenId) public view override returns (string memory) {
         _requireMinted(tokenId); // To exclude burned tokens
         return
-            _metadataGenerator.getJsonMetadata(
+            IYiJingMetadataGenerator(metadataGenerator).getJsonMetadata(
                 NftDataExtended(
                     tokenId,
                     _nftData[tokenId].hexagram,
@@ -163,6 +104,14 @@ contract YiJingNft is ERC721, IYiJingBase, Pausable, WithAffiliation {
         mintPrice = price;
     }
 
+    function setMetadataGenerator(address metadataGenerator_) public onlyOwner {
+        metadataGenerator = metadataGenerator_;
+    }
+
+    function setAffiliation(address affiliation) public onlyOwner {
+        _setAffiliation(affiliation);
+    }
+
     function withdraw() external onlyOwner {
         uint256 affiliatesBalance = IAffiliation(getAffiliation()).getTotalBalance();
         payable(_msgSender()).transfer(address(this).balance - affiliatesBalance);
@@ -171,18 +120,5 @@ contract YiJingNft is ERC721, IYiJingBase, Pausable, WithAffiliation {
     function affiliateWithdraw() external {
         uint256 balance = IAffiliation(getAffiliation()).withdraw(_msgSender());
         payable(_msgSender()).transfer(balance);
-    }
-
-    /*////////////////////////////////////////////////////
-                      INTERNALS FUNCTIONS
-    ////////////////////////////////////////////////////*/
-
-    function _modifyEncryptedInfo(
-        uint256 tokenId,
-        string memory info,
-        string memory helperMessage
-    ) internal {
-        _nftData[tokenId].info = info;
-        _nftData[tokenId].encryptionHelperMessage = helperMessage;
     }
 }

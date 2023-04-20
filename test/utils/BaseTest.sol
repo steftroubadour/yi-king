@@ -12,6 +12,8 @@ abstract contract BaseTest is Test, FuzzRecorder {
     address A_CONTRACT = address(0x2);
     address DEPLOYER = address(0x3);
     address ANOTHER_CONTRACT = address(0x4);
+    address AN_AFFILIATE = address(0x5);
+    address ANOTHER_USER = address(0x6);
     address OWNER;
     address CALLER;
 
@@ -43,11 +45,40 @@ abstract contract BaseTest is Test, FuzzRecorder {
         uint256 whatBytesLength = bytes(what).length;
         uint256 whereBytesLength = bytes(where).length;
 
-        for (uint256 i = 0; i < whereBytesLength - whatBytesLength; i++) {
+        for (uint256 i = 0; i <= whereBytesLength - whatBytesLength; i++) {
             if (areStringsEquals(slice(i + 1, i + whatBytesLength, where), what)) return true;
         }
 
         return false;
+    }
+
+    function getPositionStringContained(
+        string memory what,
+        string memory where
+    ) public pure returns (uint256) {
+        uint256 whatBytesLength = bytes(what).length;
+        uint256 whereBytesLength = bytes(where).length;
+
+        for (uint256 i = 0; i <= whereBytesLength - whatBytesLength; i++) {
+            if (areStringsEquals(slice(i + 1, i + whatBytesLength, where), what)) return i + 1;
+        }
+
+        return 0;
+    }
+
+    function findFirstCharPositionAfter(
+        string memory char,
+        uint256 startPosition,
+        string memory where
+    ) public pure returns (uint256) {
+        require(bytes(char).length == 1 && startPosition != 0);
+        uint256 whereBytesLength = bytes(where).length;
+
+        for (uint256 i = startPosition - 1; i < whereBytesLength - 1; i++) {
+            if (areStringsEquals(slice(i + 1, i + 1, where), char)) return i + 1;
+        }
+
+        return 0;
     }
 
     /*/////////////////////////////////////////////

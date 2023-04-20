@@ -3,19 +3,20 @@ pragma solidity 0.8.18;
 
 import { Strings } from "@openzeppelin/contracts/utils/Strings.sol";
 import { Base64 } from "@openzeppelin/contracts/utils/Base64.sol";
+import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 import { IYiJingImagesGenerator } from "src/interface/IYiJingImagesGenerator.sol";
 import { IYiJingBase } from "src/interface/IYiJingBase.sol";
 
 /// @author Stephane Chaunard <linktr.ee/stephanechaunard>
 /// @title images for Yi Jing App & NFT
-contract YiJingMetadataGenerator is IYiJingBase {
+contract YiJingMetadataGenerator is IYiJingBase, Ownable {
     using Strings for uint256;
     using Strings for uint64;
 
-    IYiJingImagesGenerator _imagesGenerator;
+    address public imagesGenerator;
 
-    constructor(address imagesGenerator) {
-        _imagesGenerator = IYiJingImagesGenerator(imagesGenerator);
+    constructor(address imagesGenerator_) {
+        imagesGenerator = imagesGenerator_;
     }
 
     /*/////////////////////////////////////////////////////
@@ -39,7 +40,7 @@ contract YiJingMetadataGenerator is IYiJingBase {
                         _getMetadataDescription(nftData),
                         '",',
                         '"image":"',
-                        _imagesGenerator.getNftImage(nftData.hexagram.lines),
+                        IYiJingImagesGenerator(imagesGenerator).getNftImage(nftData.hexagram.lines),
                         '",',
                         '"background_color":"0f234f",',
                         '"attributes":"',
@@ -48,6 +49,10 @@ contract YiJingMetadataGenerator is IYiJingBase {
                     )
                 )
             );
+    }
+
+    function setImagesGenerator(address imagesGenerator_) public onlyOwner {
+        imagesGenerator = imagesGenerator_;
     }
 
     /*////////////////////////////////////////////////////
