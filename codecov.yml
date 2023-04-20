@@ -1,4 +1,3 @@
 ignore:
-  - "script/**/*"
-  - "test/utils/BaseTest.t.sol"
-  - "test/*"
+  - (?s:script/.*/[^\/]*)\Z
+  - ^test\/(?!utils\/BaseTest\.t\.sol$).+$
