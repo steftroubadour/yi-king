@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import { useBlockNumber, useContractRead } from "wagmi";
-import { contractAbi, contractAddress } from "@/contracts/random";
+import YiJingRandom from "@/contracts/YiJingRandom.json";
 import { Box, Button, Heading, Input, InputGroup, InputLeftAddon, VStack } from "@chakra-ui/react";
 import { sepolia, foundry } from "wagmi/chains";
 
@@ -59,12 +59,13 @@ export default function RandomForm({ setDraw }) {
 
   type DrawLineValue = 0 | 1 | 2 | 3;
 
+  const CHAIN_ID = foundry.id;
   useContractRead({
-    address: contractAddress,
-    abi: contractAbi,
+    address: YiJingRandom[CHAIN_ID.toString()].contractAddress,
+    abi: YiJingRandom.contractAbi,
     functionName: "getNumbers",
     args: [seed!, length, min, max],
-    chainId: foundry.id,
+    chainId: CHAIN_ID,
     enabled: enabled,
     onSuccess(data) {
       const draw = [];

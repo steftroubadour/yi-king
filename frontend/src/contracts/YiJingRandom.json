@@ -1,0 +1,48 @@
+{
+  "contractAbi": [
+    {
+      "inputs": [
+        {
+          "internalType": "bytes",
+          "name": "seed",
+          "type": "bytes"
+        },
+        {
+          "internalType": "uint256",
+          "name": "length",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "min",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "max",
+          "type": "uint256"
+        }
+      ],
+      "name": "getNumbers",
+      "outputs": [
+        {
+          "internalType": "uint256[]",
+          "name": "",
+          "type": "uint256[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "31337": {
+    "chainName": "anvil",
+    "contractAddress": "0xC0340c0831Aa40A0791cF8C3Ab4287EB0a9705d8",
+    "deployer": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+  },
+  "11155111": {
+    "chainName": "sepolia",
+    "deployer": "0xf39",
+    "contractAddress": "0x0c03eCB1a5ffba797"
+  }
+}

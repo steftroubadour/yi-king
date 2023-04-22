@@ -3,11 +3,9 @@
 pragma solidity ^0.8.16;
 
 import "@openzeppelin/contracts/utils/Strings.sol";
-
 import "./utils/recorder.s.sol";
-import "forge-std/Test.sol";
 
-contract printEnv is Recorder, Test {
+contract printEnv is Recorder {
     using Strings for address;
 
     function run() public {
@@ -21,8 +19,8 @@ contract printEnv is Recorder, Test {
         // contract address
         vm.writeLine(
             envPath,
-            string.concat("YiJingImagesGenerator:", c.imageContract.toHexString())
+            string.concat("YiJingImagesGenerator:", c.imagesGenerator.toHexString())
         );
-        vm.writeLine(envPath, string.concat("YiJingRandom:", c.imageContract.toHexString()));
+        vm.writeLine(envPath, string.concat("YiJingRandom:", c.imagesGenerator.toHexString()));
     }
 }

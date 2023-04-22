@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useContractReads } from "wagmi";
-import { contractAbi, contractAddress } from "@/contracts/yijingImage";
+import YiJingImagesGenerator from "@/contracts/YiJingImagesGenerator.json";
 import {
   Box,
   Card,
@@ -15,14 +15,14 @@ import { foundry } from "wagmi/chains";
 
 export default function Hexagrams({ draw }) {
   const [sources, setSources] = useState<string[3] | null>(null);
-
+  const CHAIN_ID = foundry.id;
   const yiJingImageContract = {
-    address: contractAddress,
-    abi: contractAbi,
-    chainId: foundry.id,
+    address: YiJingImagesGenerator[CHAIN_ID.toString()].contractAddress,
+    abi: YiJingImagesGenerator.contractAbi,
+    chainId: CHAIN_ID,
   };
 
-/*  interface Contract {
+  /*  interface Contract {
     address: string;
     abi: string;
     chainId: number;

@@ -1,18 +1,19 @@
 import { useState } from "react";
 import { useContractRead } from "wagmi";
-import { contractAbi, contractAddress } from "@/contracts/yijingImage";
+import YiJingImagesGenerator from "@/contracts/YiJingImagesGenerator.json";
 import { Box, Button, Card, CardBody, CardFooter, Center, Image } from "@chakra-ui/react";
 import { foundry } from "wagmi/chains";
 
 export default function MetadataImage({ draw }) {
   const [src, setSrc] = useState<string | null>(null);
 
+  const CHAIN_ID = foundry.id;
   useContractRead({
-    address: contractAddress,
-    abi: contractAbi,
+    address: YiJingImagesGenerator[CHAIN_ID.toString()].contractAddress,
+    abi: YiJingImagesGenerator.contractAbi,
     functionName: "getNftImage",
     args: [draw],
-    chainId: foundry.id,
+    chainId: CHAIN_ID,
     enabled: draw !== null,
     onSuccess(data) {
       //console.log('Success', JSON.stringify(data));
@@ -26,7 +27,7 @@ export default function MetadataImage({ draw }) {
     <Box hidden={!draw && !src} width={{ base: "100%", lg: "50vw" }}>
       <Card width={{ base: "100%", lg: "100%" }}>
         <CardBody p={"none"}>
-          <Image src={src} alt="" height="100%" />
+          <Image src={src!} alt="" height="100%" />
         </CardBody>
         <CardFooter justifyContent="space-around">
           <Center>

@@ -1,11 +1,25 @@
 {
-  "anvil": {
-    "contracts": {
-      "YiJingImagesGenerator": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
-      "YiJingRandom": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
-    },
-    "initialSetup": {
-      "deployer": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
-    }
+  "contractsNames": [
+    "YiJingRandom",
+    "YiJingImagesGenerator",
+    "Affiliation",
+    "YiJingMetadataGenerator",
+    "YiJingNft"
+  ],
+  "contracts": {
+    "YiJingRandom": "0xC0340c0831Aa40A0791cF8C3Ab4287EB0a9705d8",
+    "YiJingMetadataGenerator": "0x4432a6DcfAEAB227673B43C30c6fEf40eaBD5D30",
+    "YiJingImagesGenerator": "0xFf658343244c0475b9305859F1b7CDAB9784762f",
+    "Affiliation": "0x1c1521cf734CD13B02e8150951c3bF2B438be780",
+    "YiJingNft": "0x0B1a87021ec75fBaE919b1e86b2B1335FFC8F4d3"
+  },
+  "chainAlias": "anvil",
+  "chainId": 31337,
+  "setup": {
+    "deployer": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+    "mint_price": "1 ETH",
+    "nft_is_paused": false,
+    "deployment_tests_valid": true,
+    "contracts_owner": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
   }
 }

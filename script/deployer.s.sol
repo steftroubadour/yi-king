@@ -1,12 +1,11 @@
 //SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.16;
 
-import "forge-std/Script.sol";
-import "forge-std/Test.sol";
 import "./utils/recorder.s.sol";
 
-contract Deployer is Script, Recorder, Test {
+contract Deployer is Recorder {
     string internal networkAlias;
+    string[] chainsAliasForFrontend = ["anvil", "sepolia"];
 
     function run() public {
         // init path record and set alias network name
@@ -27,11 +26,17 @@ contract Deployer is Script, Recorder, Test {
         vm.startBroadcast(privateKey);
         delete privateKey;
 
-        _0_deployYiJingImagesGenerator();
-        _1_deployYiJingRandom();
+        _0_deployYiJingRandom();
+        _1_deployYiJingImagesGenerator();
+        _1_deployAffiliation();
+        _2_deployYiJingMetadataGenerator();
+        _3_deployYiJingNft();
+
+        _4_init();
         vm.stopBroadcast();
 
         // write record of deployed contracts
-        writeRecord(networkAlias, DEPLOYER);
+        writeRecord(_dataSetupRetriever());
+        exportTo("frontend/src/contracts/", chainsAliasForFrontend);
     }
 }

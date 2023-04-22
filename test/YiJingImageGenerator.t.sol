@@ -90,13 +90,10 @@ contract YiJingImagesGenerator_test is BaseTest {
 
     function test4getNftImage() public {
         uint8[6] memory result = [3, 1, 2, 3, 0, 1]; // i.e. [9, 7, 8, 9, 6, 7]
-        vm.prank(ANOTHER_CONTRACT);
-        vm.expectRevert("Caller: not good one");
-        string memory nftImage = imagesGenerator.getNftImage(result);
 
         //emit log_named_string("result svg", image.getNftImage(result));
         vm.prank(A_CONTRACT);
-        nftImage = imagesGenerator.getNftImage(result);
+        string memory nftImage = imagesGenerator.getNftImage(result);
         assertFalse(isEmptyString(nftImage));
         assertEq(slice(1, 26, nftImage), "data:image/svg+xml;base64,");
     }

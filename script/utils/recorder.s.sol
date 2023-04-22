@@ -2,44 +2,25 @@
 
 pragma solidity ^0.8.16;
 
-import "@openzeppelin/contracts/utils/Strings.sol";
-import "forge-std/StdJson.sol";
+import { Strings } from "@openzeppelin/contracts/utils/Strings.sol";
+import { stdJson } from "forge-std/StdJson.sol";
+import { Base } from "./base.s.sol";
+import { Exporter } from "./exporter.s.sol";
 
-import "./base.s.sol";
-
-abstract contract Recorder is Base {
+abstract contract Recorder is Exporter {
     using Strings for uint256;
     using stdJson for string;
 
-    struct InitialSetup {
-        address deployer;
-    }
-
-    struct Contracts {
-        address imageContract;
-        address randomContract;
-    }
-
-    struct Network {
-        Contracts deployed;
-        InitialSetup initialSetup;
-    }
-
     /// @notice states
-    string internal path;
-    string internal contracts = "contracts";
-    string internal initialSetup = "initialSetup";
-    string internal network = "network";
+    string private _path;
+    string private _contracts = "contracts";
+    string private _setup = "setup";
+    string private _json = "json";
 
     function initPath() internal returns (string memory networkAlias) {
-        networkAlias = _findNetworkAlias();
-        path = string.concat("script/utils/", networkAlias, ".json");
+        networkAlias = _getChainAlias();
+        _path = string.concat("script/utils/", networkAlias, ".json");
     }
-
-    // function loadNetworkState() internal {
-    //     Contracts memory parsedContracts = abi.decode(readRecordKey(".contracts"),(Contracts))
-    //     dao=
-    // }
 
     /**
      * @notice Returns bytes memory to read with `abi.decode(rawJson,(types/Struct))`
@@ -47,46 +28,45 @@ abstract contract Recorder is Base {
      * NOTE use Struct only if all types are the same
      */
     function readRecordKey(string memory key) internal view returns (bytes memory) {
-        string memory file = vm.readFile(path);
+        string memory file = vm.readFile(_path);
         return file.parseRaw(key);
     }
 
-    function writeRecord(string memory networkAlias, address deployer) internal {
-        vm.writeFile(path, "");
+    function writeRecord(Setup memory setup) internal {
+        vm.writeFile(_path, "");
 
         // write current contract address
-        string memory index = "contractAddr";
-        string memory serializedAt;
+        string memory index = "contracts";
+        string memory serialized;
 
-        serializedAt = index.serialize("YiJingImagesGenerator", address(imageContract));
-        serializedAt = index.serialize("YiJingRandom", address(randomContract));
+        serialized = index.serialize("YiJingRandom", address(random));
+        serialized = index.serialize("YiJingImagesGenerator", address(imagesGenerator));
+        serialized = index.serialize("Affiliation", address(affiliation));
+        serialized = index.serialize("YiJingMetadataGenerator", address(metadataGenerator));
+        serialized = index.serialize("YiJingNft", address(nft));
 
-        contracts = serializedAt;
+        _contracts = serialized;
+        delete serialized;
 
         // write initial setup
         index = "setup";
-        delete serializedAt;
-        serializedAt = index.serialize("deployer", deployer);
-
-        initialSetup = serializedAt;
+        serialized = index.serialize("deployer", setup.deployer);
+        serialized = index.serialize("contracts_owner", setup.contractsOwner);
+        serialized = index.serialize("mint_price", setup.mintPrice);
+        serialized = index.serialize("nft_is_paused", setup.nftIsPaused);
+        serialized = index.serialize("deployment_tests_valid", setup.deploymentTestsValid);
+        _setup = serialized;
+        delete serialized;
 
         index = ".";
-        delete serializedAt;
-        serializedAt = index.serialize("initialSetup", initialSetup);
-        serializedAt = index.serialize("contracts", contracts);
+        serialized = index.serialize("setup", _setup);
+        serialized = index.serialize("contracts", _contracts);
+        serialized = index.serialize("chainId", block.chainid);
+        serialized = index.serialize("chainAlias", _getChainAlias());
+        serialized = index.serialize("contractsNames", contractsNames);
+        _json = serialized;
+        delete serialized;
 
-        network = network.serialize(networkAlias, serializedAt);
-
-        network.write(path);
-    }
-
-    function _findNetworkAlias() internal view returns (string memory) {
-        uint256 chainId = block.chainid;
-        if (chainId == 5) return "goerli";
-        if (chainId == 31337) return "anvil";
-        if (chainId == 1) return "mainnet";
-        if (chainId == 11155111) return "sepolia";
-
-        revert("Bad network!");
+        _json.write(_path);
     }
 }

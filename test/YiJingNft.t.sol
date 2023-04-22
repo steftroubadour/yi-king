@@ -28,11 +28,10 @@ contract YiJingNft_test is BaseTest {
         // init
         imagesGenerator.init(address(metadataGenerator));
         affiliation.init(address(nft));
+        nft.togglePause();
         vm.stopPrank();
 
         OWNER = DEPLOYER;
-        vm.prank(OWNER);
-        nft.togglePause();
 
         // Add an affiliate
         vm.prank(OWNER);

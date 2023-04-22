@@ -1,0 +1,161 @@
+{
+  "contractAbi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "imagesGenerator_",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousOwner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipTransferred",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint8[6]",
+                  "name": "lines",
+                  "type": "uint8[6]"
+                }
+              ],
+              "internalType": "struct IYiJingBase.Hexagram",
+              "name": "hexagram",
+              "type": "tuple"
+            },
+            {
+              "internalType": "uint64",
+              "name": "date",
+              "type": "uint64"
+            },
+            {
+              "internalType": "bool",
+              "name": "encrypted",
+              "type": "bool"
+            },
+            {
+              "internalType": "string",
+              "name": "info",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "encryptionHelperMessage",
+              "type": "string"
+            }
+          ],
+          "internalType": "struct IYiJingBase.NftDataExtended",
+          "name": "nftData",
+          "type": "tuple"
+        }
+      ],
+      "name": "getJsonMetadata",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "imagesGenerator",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "renounceOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "imagesGenerator_",
+          "type": "address"
+        }
+      ],
+      "name": "setImagesGenerator",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "31337": {
+    "chainName": "anvil",
+    "contractAddress": "0x4432a6DcfAEAB227673B43C30c6fEf40eaBD5D30",
+    "deployer": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+  },
+  "11155111": {
+    "chainName": "sepolia",
+    "deployer": "0xf39",
+    "contractAddress": "0xc0c5"
+  }
+}

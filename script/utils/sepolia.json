@@ -1,11 +1,25 @@
 {
-  "sepolia": {
-    "contracts": {
-      "NFTMetadataImage": "0xC280da6d100Aa279480694601C62D42fbe6685c0",
-      "Random": "0x25376b91deb3a9B7DDb387D6B5aAB97fa9192E87"
-    },
-    "initialSetup": {
-      "deployer": "0x45f6e37A97aA1C6b852FBf3581C3a3730eAA7145"
-    }
+  "chainId": 11155111,
+  "contractsNames": [
+    "YiJingRandom",
+    "YiJingImagesGenerator",
+    "Affiliation",
+    "YiJingMetadataGenerator",
+    "YiJingNft"
+  ],
+  "chainAlias": "sepolia",
+  "setup": {
+    "Deployment tests valid": true,
+    "nft is paused": false,
+    "deployer": "0xf39",
+    "contracts owner": "0xf39",
+    "mint price": "0.0080 ETH"
+  },
+  "contracts": {
+    "YiJingMetadataGenerator": "0xc0c5",
+    "YiJingImagesGenerator": "0x1c39BA1",
+    "Affiliation": "0xb04CB6c52E72",
+    "YiJingRandom": "0x0c03eCB1a5ffba797",
+    "YiJingNft": "0xa195A8176a54"
   }
 }
