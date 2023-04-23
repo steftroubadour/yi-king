@@ -10,7 +10,10 @@ import App from "../components/App";
 
 const { chains, provider } = configureChains(
   [mainnet, goerli, sepolia, polygon, polygonMumbai, foundry] as Chain[],
-  [alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_ID! }), publicProvider()]
+  [
+    //alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_ID! }),
+    publicProvider(),
+  ]
 );
 
 const { connectors } = getDefaultWallets({
@@ -22,7 +25,7 @@ const wagmiClient = createClient({
   autoConnect: true,
   connectors,
   provider,
-} as CreateClientConfig) as Client;
+});
 
 export default function Home() {
   return (
