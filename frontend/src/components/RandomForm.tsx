@@ -6,7 +6,7 @@ import { Box, Button, Heading, Input, InputGroup, InputLeftAddon, VStack } from 
 import { sepolia, foundry } from "wagmi/chains";
 
 // Form to Mint NFT w/encrypted description
-export default function RandomForm({ setDraw }) {
+export default function RandomForm({ setDraw, setInfo }) {
   const [enabled, setEnabled] = useState(false);
   const [blockNumberDraw, setBlockNumberDraw] = useState<number | null>(null);
   const [blockNumber, setBlockNumber] = useState<number | null>(null);
@@ -55,6 +55,7 @@ export default function RandomForm({ setDraw }) {
     setSeed(
       ethers.utils.keccak256(abiCoder.encode(["string", "string"], [form.name, form.question]))
     );
+    setInfo({ name: form.name, question: form.question });
   }, [form]);
 
   type DrawLineValue = 0 | 1 | 2 | 3;
@@ -110,7 +111,7 @@ export default function RandomForm({ setDraw }) {
           ))}
 
           <Button isDisabled={blockNumberDraw === blockNumber} onClick={enableUseContractReadHook}>
-            Click (#{blockNumber}@{sepolia.name})
+            Hexagram (#{blockNumber}@{sepolia.name})
           </Button>
         </Box>
       </VStack>

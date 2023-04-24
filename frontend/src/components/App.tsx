@@ -1,17 +1,34 @@
 import { useState } from "react";
-import { Box, Stack } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Stack,
+  VStack,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { useAccount } from "wagmi";
 import MetadataImage from "@/components/MetadataImage";
 import Hexagrams from "@/components/Hexagrams";
 import Header from "@/components/Header";
 import RandomForm from "@/components/RandomForm";
+import MintForm from "@/components/MintForm";
 
 export default function App() {
   type DrawLineValue = 0 | 1 | 2 | 3;
+  type Info = { name: string; question: string };
   const [draw, setDraw] = useState<DrawLineValue[6] | null>(null);
-  const [toMint, setToMint] = useState<boolean>(false);
+  const [info, setInfo] = useState<Info>({ name: "", question: "" });
 
-  const { address, isConnected } = useAccount();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const { isConnected } = useAccount();
   /*const provider = useProvider()
   const {data: signerData} = useSigner();*/
 
@@ -19,43 +36,33 @@ export default function App() {
     <Box pb={{ base: "12", md: "24" }}>
       <Header />
       <Box mx={{ base: "10", md: "25%" }} spacing="10">
-        {toMint ? renderMintSection() : renderRandomSection()}
-      </Box>
-    </Box>
-  );
-
-  function renderRandomSection() {
-    return (
-      <>
-        <RandomForm setDraw={setDraw} />
+        <Modal isOpen={isOpen} onClose={onClose} size={"xl"}>
+          <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px) hue-rotate(90deg)" />
+          <ModalContent>
+            <ModalHeader />
+            <ModalCloseButton />
+            <ModalBody>
+              <VStack justify="center" flex={{ base: 1, md: "auto" }} mb="10">
+                <MetadataImage draw={draw} isOpen={isOpen} />
+                <MintForm draw={draw} isOpen={isOpen} info={info} />
+              </VStack>
+            </ModalBody>
+            <ModalFooter />
+          </ModalContent>
+        </Modal>
+        <RandomForm setDraw={setDraw} setInfo={setInfo} />
         <Stack
           direction={{ base: "column", md: "row" }}
           justify="space-between"
           alignItems="center"
         >
           <Hexagrams draw={draw} />
-          <MetadataImage
-            draw={draw}
-            setToMint={setToMint}
-            toMint={toMint}
-            isConnected={isConnected}
-          />
+          <VStack justify="center" flex={{ base: 1, md: "auto" }} mb="10">
+            <MetadataImage draw={draw} onOpen={onOpen} isOpen={isOpen} />
+            <MintForm draw={draw} isOpen={isOpen} info={info} onOpen={onOpen} />
+          </VStack>
         </Stack>
-      </>
-    );
-  }
-
-  function renderMintSection() {
-    return (
-      <>
-        <Stack
-          direction={{ base: "column", md: "row" }}
-          justify="space-between"
-          alignItems="center"
-        >
-          <MetadataImage draw={draw} toMint={toMint} isConnected={isConnected} />
-        </Stack>
-      </>
-    );
-  }
+      </Box>
+    </Box>
+  );
 }
