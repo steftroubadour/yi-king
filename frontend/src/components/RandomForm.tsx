@@ -76,7 +76,7 @@ export default function RandomForm({ setDraw, setInfo }) {
       //console.log('New draw', JSON.stringify(draw));
 
       setEnabled(false);
-      setDraw(draw as DrawLineValue[6]);
+      setDraw(draw);
       setBlockNumberDraw(blockNumber);
     },
   });

@@ -48,7 +48,7 @@ contract YiJingNft_test is BaseTest {
         assertFalse(imagesGenerator.paused());
         assertFalse(nft.paused());
 
-        assertEq(nft.mintPrice(), 1 ether);
+        assertEq(nft.mintPrice(), 0.001 ether);
         assertEq(address(nft).balance, 0);
     }
 
@@ -158,14 +158,14 @@ contract YiJingNft_test is BaseTest {
 
         vm.prank(ANOTHER_USER);
         vm.expectRevert("Pausable: paused");
-        nft.mint{ value: mintPrice - 0.1 ether }(nftData, AN_AFFILIATE);
+        nft.mint{ value: mintPrice }(nftData, AN_AFFILIATE);
 
         vm.prank(OWNER);
         nft.togglePause();
 
         vm.prank(ANOTHER_USER);
         vm.expectRevert("NFT: value too small");
-        nft.mint{ value: mintPrice - 0.1 ether }(nftData, AN_AFFILIATE);
+        nft.mint{ value: mintPrice - 1 wei }(nftData, AN_AFFILIATE);
     }
 
     function testBurn() public {

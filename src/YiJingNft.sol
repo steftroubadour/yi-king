@@ -37,7 +37,7 @@ contract YiJingNft is ERC721, IYiJingBase, Pausable, WithAffiliation {
         address affiliation_
     ) ERC721("Yi Jing Saver", "YIJING") WithAffiliation(affiliation_) {
         metadataGenerator = metadataGenerator_;
-        setMintPrice(1 ether);
+        setMintPrice(0.001 ether);
     }
 
     /*////////////////////////////////////////////////////

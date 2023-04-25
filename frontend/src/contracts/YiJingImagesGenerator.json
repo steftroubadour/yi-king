@@ -1,13 +1,13 @@
 {
-  "31337": {
-    "deployer": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
-    "contractAddress": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
-    "chainName": "anvil"
-  },
   "11155111": {
-    "deployer": "0xf39",
     "chainName": "sepolia",
-    "contractAddress": "0x1c39BA1"
+    "contractAddress": "0x9283f9Fe8F2C41A852eA33a5931CB1544DB30aef",
+    "deployer": "0x45f6e37A97aA1C6b852FBf3581C3a3730eAA7145"
+  },
+  "31337": {
+    "chainName": "anvil",
+    "deployer": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+    "contractAddress": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
   },
   "contractAbi": [
     {

@@ -20,7 +20,7 @@ ffi = true
 [rpc_endpoints]
 anvil = "http://localhost:8545/"
 goerli = "https://ethereum-goerli-rpc.allthatnode.com"
-sepolia = "https://ethereum-sepolia-rpc.allthatnode.com"
+sepolia = "https://eth-sepolia.g.alchemy.com/v2/${ALCHEMY_PROJECT_API_KEY}"
 mainnet = "https://ethereum-mainnet-rpc.allthatnode.com"
 polygon = "https://polygon-mainnet-rpc.allthatnode.com:8545"
 mumbai = "https://polygon-testnet-rpc.allthatnode.com:8545"

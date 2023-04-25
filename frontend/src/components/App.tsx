@@ -23,7 +23,7 @@ import MintForm from "@/components/MintForm";
 export default function App() {
   type DrawLineValue = 0 | 1 | 2 | 3;
   type Info = { name: string; question: string };
-  const [draw, setDraw] = useState<DrawLineValue[6] | null>(null);
+  const [draw, setDraw] = useState<Array<DrawLineValue> | null>(null);
   const [info, setInfo] = useState<Info>({ name: "", question: "" });
 
   const { isOpen, onOpen, onClose } = useDisclosure();
