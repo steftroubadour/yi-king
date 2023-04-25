@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import { ethers } from "ethers";
-import { useBlockNumber, useContractRead, useNetwork } from "wagmi";
+import { useAccount, useBlockNumber, useContractRead, useNetwork } from "wagmi";
 import YiJingRandom from "@/contracts/YiJingRandom.json";
 import { Box, Button, Heading, Input, InputGroup, InputLeftAddon, VStack } from "@chakra-ui/react";
 import { sepolia, foundry } from "wagmi/chains";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 // Form to Mint NFT w/encrypted description
-export default function RandomForm({ setDraw, setInfo }:{ setDraw: any, setInfo:any}) {
+export default function RandomForm({ setDraw, setInfo }: { setDraw: any; setInfo: any }) {
   const [enabled, setEnabled] = useState(false);
   const [blockNumberDraw, setBlockNumberDraw] = useState<number | null>(null);
   const [blockNumber, setBlockNumber] = useState<number | null>(null);
@@ -64,6 +65,7 @@ export default function RandomForm({ setDraw, setInfo }:{ setDraw: any, setInfo:
 
   type DrawLineValue = 0 | 1 | 2 | 3;
 
+  const { isConnected } = useAccount();
   const { chain } = useNetwork();
   const chainId = chain?.id === undefined ? 0 : chain?.id;
   const contractJson = YiJingRandom as ContractJson;
@@ -97,6 +99,31 @@ export default function RandomForm({ setDraw, setInfo }:{ setDraw: any, setInfo:
     { label: "Question", input: "question" },
   ];
 
+  function renderButton() {
+    if (!blockNumber) return;
+
+    if (isConnected) {
+      return (
+        <Button isDisabled={blockNumberDraw === blockNumber} onClick={enableUseContractReadHook}>
+          Hexagram (#{blockNumber}@{sepolia.name})
+        </Button>
+      );
+    }
+
+    return (
+      <ConnectButton
+        accountStatus={{
+          smallScreen: "avatar",
+          largeScreen: "full",
+        }}
+        chainStatus={{
+          smallScreen: "none",
+          largeScreen: "full",
+        }}
+      />
+    );
+  }
+
   return (
     <>
       <VStack justify="center" flex={{ base: 1, md: "auto" }} mb="10">
@@ -121,9 +148,7 @@ export default function RandomForm({ setDraw, setInfo }:{ setDraw: any, setInfo:
             </Box>
           ))}
 
-          <Button isDisabled={blockNumberDraw === blockNumber} onClick={enableUseContractReadHook}>
-            Hexagram (#{blockNumber}@{sepolia.name})
-          </Button>
+          {renderButton()}
         </Box>
       </VStack>
     </>

@@ -7,6 +7,7 @@ import {
   useNetwork,
   usePrepareContractWrite,
   useWaitForTransaction,
+  useContractRead,
 } from "wagmi";
 import {
   Box,
@@ -22,7 +23,17 @@ import { CheckCircleIcon, SpinnerIcon } from "@chakra-ui/icons";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import YiJingNft from "@/contracts/YiJingNft.json";
 
-export default function MintForm({ draw, onOpen, info, isOpen }: { draw: any, onOpen:any, info:any, isOpen:any}) {
+export default function MintForm({
+  draw,
+  onOpen,
+  info,
+  isOpen,
+}: {
+  draw: any;
+  onOpen: any;
+  info: any;
+  isOpen: any;
+}) {
   interface FormState {
     info: string;
     isEncrypted: boolean;
@@ -51,6 +62,7 @@ export default function MintForm({ draw, onOpen, info, isOpen }: { draw: any, on
   const [write, setWrite] = useState<boolean>(false);
   const [isMinting, setIsMinting] = useState<boolean>(false);
   const [minted, setMinted] = useState<boolean>(false);
+  const [mintPrice, setMintPrice] = useState<number | null>(null);
 
   useEffect(() => {
     setForm({
@@ -63,12 +75,23 @@ export default function MintForm({ draw, onOpen, info, isOpen }: { draw: any, on
   }, [isEncrypted]);
 
   const chainId = chain?.id === undefined ? 0 : chain?.id;
-
   const contractJson = YiJingNft as ContractJson;
 
   type ContractJson = {
     [key: string]: any;
   };
+
+  useContractRead({
+    address: contractJson[chainId.toString()]?.contractAddress,
+    abi: contractJson.contractAbi,
+    functionName: "mintPrice",
+    args: [],
+    chainId: chain?.id,
+    enabled: draw !== null,
+    onSuccess(data: number) {
+      setMintPrice(data);
+    },
+  });
 
   const { config } = usePrepareContractWrite({
     address: contractJson[chainId.toString()]?.contractAddress,
@@ -85,13 +108,14 @@ export default function MintForm({ draw, onOpen, info, isOpen }: { draw: any, on
       ethers.constants.AddressZero,
     ],
     overrides: {
-      value: ethers.utils.parseEther("1"),
-      gasLimit: 30000000,
+      value: mintPrice,
+      gasLimit: 300000,
     },
     chainId: chain?.id,
-    enabled: isOpen,
+    enabled: isOpen && mintPrice,
   });
   const contractWrite = useContractWrite(config);
+  console.log("mintPrice", mintPrice);
 
   useEffect(() => {
     if (!write) return;
