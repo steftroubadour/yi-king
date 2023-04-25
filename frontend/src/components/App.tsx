@@ -36,11 +36,10 @@ export default function App() {
     spacing: "10",
   };
 
-  const mint1Props = {
+  const metadataProps = {
     draw: draw,
     isOpen: isOpen,
-    info: info,
-    onClose: onClose,
+    onOpen: onOpen
   };
 
   return (
@@ -54,8 +53,8 @@ export default function App() {
             <ModalCloseButton />
             <ModalBody>
               <VStack justify="center" flex={{ base: 1, md: "auto" }} mb="10">
-                <MetadataImage draw={draw} isOpen={isOpen} />
-                <MintForm {...mint1Props} />
+                <MetadataImage {...metadataProps} />
+                <MintForm draw={draw} isOpen={isOpen} info={info} onOpen={onOpen} />
               </VStack>
             </ModalBody>
             <ModalFooter />
@@ -69,7 +68,7 @@ export default function App() {
         >
           <Hexagrams draw={draw} />
           <VStack justify="center" flex={{ base: 1, md: "auto" }} mb="10">
-            <MetadataImage draw={draw} onOpen={onOpen} isOpen={isOpen} />
+            <MetadataImage {...metadataProps} />
             <MintForm draw={draw} isOpen={isOpen} info={info} onOpen={onOpen} />
           </VStack>
         </Stack>
