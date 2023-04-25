@@ -44,7 +44,7 @@ export default function App() {
             <ModalBody>
               <VStack justify="center" flex={{ base: 1, md: "auto" }} mb="10">
                 <MetadataImage draw={draw} isOpen={isOpen} />
-                <MintForm draw={draw} isOpen={isOpen} info={info} />
+                <MintForm draw={draw} isOpen={isOpen} info={info} onClose={onClose} />
               </VStack>
             </ModalBody>
             <ModalFooter />

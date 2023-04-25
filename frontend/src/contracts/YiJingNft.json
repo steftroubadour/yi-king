@@ -1,4 +1,14 @@
 {
+  "31337": {
+    "deployer": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+    "contractAddress": "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
+    "chainName": "anvil"
+  },
+  "11155111": {
+    "deployer": "0xf39",
+    "chainName": "sepolia",
+    "contractAddress": "0xa195A8176a54"
+  },
   "contractAbi": [
     {
       "inputs": [
@@ -598,15 +608,5 @@
       "stateMutability": "nonpayable",
       "type": "function"
     }
-  ],
-  "31337": {
-    "chainName": "anvil",
-    "contractAddress": "0x0B1a87021ec75fBaE919b1e86b2B1335FFC8F4d3",
-    "deployer": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
-  },
-  "11155111": {
-    "chainName": "sepolia",
-    "deployer": "0xf39",
-    "contractAddress": "0xa195A8176a54"
-  }
+  ]
 }

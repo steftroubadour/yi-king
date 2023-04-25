@@ -3,17 +3,16 @@ import { ethers } from "ethers";
 import {
   useAccount,
   useContractWrite,
+  useContractEvent,
   useNetwork,
   usePrepareContractWrite,
   useWaitForTransaction,
 } from "wagmi";
-import YiJingRandom from "@/contracts/YiJingRandom.json";
 import {
   Box,
   Button,
   Center,
   Checkbox,
-  Heading,
   Input,
   InputGroup,
   InputLeftAddon,
@@ -33,7 +32,7 @@ export default function MintForm({ draw, onOpen, info, isOpen }) {
   }
 
   const { chain } = useNetwork();
-  const { isConnected } = useAccount();
+  const { address, isConnected } = useAccount();
 
   const [form, setForm] = useState<FormState>({
     info: JSON.stringify(info),
@@ -45,10 +44,9 @@ export default function MintForm({ draw, onOpen, info, isOpen }) {
   const [validated, setValidated] = useState<boolean>(false);
 
   const [isEncrypted, setIsEncrypted] = useState<boolean>(false);
-
-  useEffect(() => {
-    //setInfo({ name: form.name, question: form.question });
-  }, [form]);
+  const [write, setWrite] = useState<boolean>(false);
+  const [isMinting, setIsMinting] = useState<boolean>(false);
+  const [minted, setMinted] = useState<boolean>(false);
 
   useEffect(() => {
     setForm({
@@ -82,23 +80,54 @@ export default function MintForm({ draw, onOpen, info, isOpen }) {
     enabled: isOpen,
   });
   const contractWrite = useContractWrite(config);
+
+  useEffect(() => {
+    if (!write) return;
+
+    contractWrite.write();
+  }, [write]);
+
   const waitForTransaction = useWaitForTransaction({
     hash: contractWrite.data?.hash,
     enabled: isOpen,
   });
 
+  useEffect(() => {
+    if (!waitForTransaction.isSuccess) return;
+
+    setIsMinting(true);
+  }, [waitForTransaction.isSuccess]);
+
+  useContractEvent({
+    address: YiJingNft[chain?.id.toString()]?.contractAddress,
+    abi: YiJingNft.contractAbi,
+    eventName: "Transfer",
+    listener(from, to, tokenId) {
+      console.log(from, to, tokenId);
+      if (to === address) {
+        setIsMinting(false);
+        setMinted(true);
+      }
+    },
+  });
+
   function renderButton() {
+    if (!draw) return;
+
     if (isConnected) {
       if (!validated) {
         return <Button onClick={() => setValidated(true)}>Validate</Button>;
       }
 
       return (
-        <Button onClick={contractWrite.write}>
-          {waitForTransaction.isFetching ? (
+        <Button onClick={() => setWrite(true)}>
+          {isMinting ? (
             <SpinnerIcon />
-          ) : waitForTransaction.isSuccess ? (
-            <CheckCircleIcon color={"green"} />
+          ) : minted ? (
+            <span>
+              <CheckCircleIcon color={"green"} mr={"1"} />
+              Minted
+            </span>
           ) : (
             "Mint"
           )}
@@ -207,7 +236,6 @@ export default function MintForm({ draw, onOpen, info, isOpen }) {
         <Button hidden={!draw || isOpen} onClick={onOpen}>
           Save data on Blockchain
         </Button>
-        ;
       </VStack>
     </>
   );
