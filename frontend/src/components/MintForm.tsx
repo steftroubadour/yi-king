@@ -22,7 +22,7 @@ import { CheckCircleIcon, SpinnerIcon } from "@chakra-ui/icons";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import YiJingNft from "@/contracts/YiJingNft.json";
 
-export default function MintForm({ draw, onOpen, info, isOpen }) {
+export default function MintForm({ draw, onOpen, info, isOpen }: { draw: any, onOpen:any, info:any, isOpen:any}) {
   interface FormState {
     info: string;
     isEncrypted: boolean;
@@ -31,10 +31,14 @@ export default function MintForm({ draw, onOpen, info, isOpen }) {
     date: number;
   }
 
+  type Form = {
+    [key: string]: any;
+  };
+
   const { chain } = useNetwork();
   const { address, isConnected } = useAccount();
 
-  const [form, setForm] = useState<FormState>({
+  const [form, setForm] = useState<Form>({
     info: JSON.stringify(info),
     isEncrypted: false,
     encryptionHelperMessage: "",
@@ -58,9 +62,17 @@ export default function MintForm({ draw, onOpen, info, isOpen }) {
     });
   }, [isEncrypted]);
 
+  const chainId = chain?.id === undefined ? 0 : chain?.id;
+
+  const contractJson = YiJingNft as ContractJson;
+
+  type ContractJson = {
+    [key: string]: any;
+  };
+
   const { config } = usePrepareContractWrite({
-    address: YiJingNft[chain?.id.toString()]?.contractAddress,
-    abi: YiJingNft.contractAbi,
+    address: contractJson[chainId.toString()]?.contractAddress,
+    abi: contractJson.contractAbi,
     functionName: "mint", // NftData memory nftData, address affiliate
     args: [
       {
@@ -84,7 +96,7 @@ export default function MintForm({ draw, onOpen, info, isOpen }) {
   useEffect(() => {
     if (!write) return;
 
-    contractWrite.write();
+    if (contractWrite.write) contractWrite.write();
   }, [write]);
 
   const waitForTransaction = useWaitForTransaction({
@@ -99,8 +111,8 @@ export default function MintForm({ draw, onOpen, info, isOpen }) {
   }, [waitForTransaction.isSuccess]);
 
   useContractEvent({
-    address: YiJingNft[chain?.id.toString()]?.contractAddress,
-    abi: YiJingNft.contractAbi,
+    address: contractJson[chainId.toString()]?.contractAddress,
+    abi: contractJson.contractAbi,
     eventName: "Transfer",
     listener(from, to, tokenId) {
       console.log(from, to, tokenId);

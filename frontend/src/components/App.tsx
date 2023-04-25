@@ -31,11 +31,22 @@ export default function App() {
   const { isConnected } = useAccount();
   /*const provider = useProvider()
   const {data: signerData} = useSigner();*/
+  const boxProps = {
+    mx: { base: "10", md: "25%" },
+    spacing: "10",
+  };
+
+  const mint1Props = {
+    draw: draw,
+    isOpen: isOpen,
+    info: info,
+    onClose: onClose,
+  };
 
   return (
     <Box pb={{ base: "12", md: "24" }}>
       <Header />
-      <Box mx={{ base: "10", md: "25%" }} spacing="10">
+      <Box {...boxProps}>
         <Modal isOpen={isOpen} onClose={onClose} size={"xl"}>
           <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px) hue-rotate(90deg)" />
           <ModalContent>
@@ -44,7 +55,7 @@ export default function App() {
             <ModalBody>
               <VStack justify="center" flex={{ base: 1, md: "auto" }} mb="10">
                 <MetadataImage draw={draw} isOpen={isOpen} />
-                <MintForm draw={draw} isOpen={isOpen} info={info} onClose={onClose} />
+                <MintForm {...mint1Props} />
               </VStack>
             </ModalBody>
             <ModalFooter />

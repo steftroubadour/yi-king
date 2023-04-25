@@ -6,7 +6,7 @@ import { Box, Button, Heading, Input, InputGroup, InputLeftAddon, VStack } from 
 import { sepolia, foundry } from "wagmi/chains";
 
 // Form to Mint NFT w/encrypted description
-export default function RandomForm({ setDraw, setInfo }) {
+export default function RandomForm({ setDraw, setInfo }:{ setDraw: any, setInfo:any}) {
   const [enabled, setEnabled] = useState(false);
   const [blockNumberDraw, setBlockNumberDraw] = useState<number | null>(null);
   const [blockNumber, setBlockNumber] = useState<number | null>(null);
@@ -17,7 +17,11 @@ export default function RandomForm({ setDraw, setInfo }) {
     question: string;
   }
 
-  const [form, setForm] = useState<FormState>({
+  type Form = {
+    [key: string]: any;
+  };
+
+  const [form, setForm] = useState<Form>({
     name: "",
     question: "",
   } as FormState);
@@ -61,9 +65,16 @@ export default function RandomForm({ setDraw, setInfo }) {
   type DrawLineValue = 0 | 1 | 2 | 3;
 
   const { chain } = useNetwork();
+  const chainId = chain?.id === undefined ? 0 : chain?.id;
+  const contractJson = YiJingRandom as ContractJson;
+
+  type ContractJson = {
+    [key: string]: any;
+  };
+
   useContractRead({
-    address: YiJingRandom[chain?.id.toString()]?.contractAddress,
-    abi: YiJingRandom.contractAbi,
+    address: contractJson[chainId.toString()]?.contractAddress,
+    abi: contractJson.contractAbi,
     functionName: "getNumbers",
     args: [seed!, length, min, max],
     chainId: chain?.id,
@@ -71,7 +82,7 @@ export default function RandomForm({ setDraw, setInfo }) {
     onSuccess(data) {
       const draw = [];
       for (let i = 0; i < data.length; i++) {
-        draw.push(JSON.parse(data[i]) as DrawLineValue);
+        draw.push(JSON.parse(data[i] as string) as DrawLineValue);
       }
       //console.log('New draw', JSON.stringify(draw));
 

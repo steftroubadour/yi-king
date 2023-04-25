@@ -13,12 +13,20 @@ import {
 } from "@chakra-ui/react";
 import { foundry } from "wagmi/chains";
 
-export default function Hexagrams({ draw }) {
+export default function Hexagrams({ draw }: { draw: any} ) {
   const [sources, setSources] = useState<string[3] | null>(null);
   const { chain } = useNetwork();
+  const chainId = chain?.id === undefined ? 0 : chain?.id;
+
+  const ImagesGenerator = YiJingImagesGenerator as ContractJson;
+
+  type ContractJson = {
+    [key: string]: any;
+  };
+
   const yiJingImageContract = {
-    address: YiJingImagesGenerator[chain?.id.toString()]?.contractAddress,
-    abi: YiJingImagesGenerator.contractAbi,
+    address: ImagesGenerator[chainId.toString()]?.contractAddress,
+    abi: ImagesGenerator.contractAbi,
     chainId: chain?.id,
   };
 
@@ -49,13 +57,13 @@ export default function Hexagrams({ draw }) {
       },
     ],
     enabled: draw !== null, // or draw! in TS
-    onSuccess(data) {
+    onSuccess(data: string) {
       console.log("Success", JSON.stringify(data));
       setSources(data);
     },
   });
 
-  if (!sources || sources.length !== 3 || !sources[0] || !sources[1] || !sources[2]) return;
+  if (!sources || sources.length !== 3 || !sources[0] || !sources[1] || !sources[2]) return(<></>);
 
   return (
     <Box hidden={!draw && !sources}>
