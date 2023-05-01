@@ -39,7 +39,7 @@ contract YiJingNft_test is BaseTest {
     }
 
     function testSetUp() public {
-        assertEq(metadataGenerator.imagesGenerator(), address(imagesGenerator));
+        assertEq(metadataGenerator.getLastVersion(), 0);
         assertEq(nft.metadataGenerator(), address(metadataGenerator));
         assertEq(nft.getAffiliation(), address(affiliation));
         assertEq(imagesGenerator.getCaller(), address(metadataGenerator));
@@ -247,6 +247,29 @@ contract YiJingNft_test is BaseTest {
                 decodedImage
             )
         );
+
+        // Set another images generator
+        vm.startPrank(OWNER);
+        YiJingImagesGenerator imagesGenerator2 = new YiJingImagesGenerator();
+        imagesGenerator2.init(address(metadataGenerator));
+        metadataGenerator.setNewImagesGenerator(address(imagesGenerator2));
+        vm.stopPrank();
+
+        assertEq(metadataGenerator.getLastVersion(), 1);
+
+        vm.mockCall(
+            address(imagesGenerator2),
+            abi.encodeWithSelector(imagesGenerator2.getNftImage.selector),
+            abi.encode("data:image/svg+xml;base64,ENCODED_IMAGE")
+        );
+
+        string memory newMetadata = nft.tokenURI(1);
+        string memory metadata_v0 = nft.tokenURI(1, 0);
+        string memory metadata_v1 = nft.tokenURI(1, 1);
+        assertFalse(areStringsEquals(tokenUri, newMetadata));
+        assertFalse(areStringsEquals(metadata_v0, metadata_v1));
+        assertTrue(areStringsEquals(metadata_v0, tokenUri));
+        assertTrue(areStringsEquals(metadata_v1, newMetadata));
     }
 
     function testSetMintPrice() public {

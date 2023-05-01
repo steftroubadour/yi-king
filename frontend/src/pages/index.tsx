@@ -1,7 +1,7 @@
 import "@rainbow-me/rainbowkit/styles.css";
 
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
-import { Client, CreateClientConfig, configureChains, createClient, WagmiConfig } from "wagmi";
+import { CreateClientConfig, configureChains, createClient, WagmiConfig } from "wagmi";
 import { Chain, mainnet, goerli, sepolia, foundry, polygon, polygonMumbai } from "wagmi/chains";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
@@ -25,7 +25,7 @@ const wagmiClient = createClient({
   autoConnect: true,
   connectors,
   provider,
-});
+} as CreateClientConfig);
 
 export default function Home() {
   return (

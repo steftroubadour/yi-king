@@ -7,26 +7,74 @@ import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 import { IYiJingImagesGenerator } from "src/interface/IYiJingImagesGenerator.sol";
 import { IYiJingBase } from "src/interface/IYiJingBase.sol";
 
-/// @author Stephane Chaunard <linktr.ee/stephanechaunard>
-/// @title images for Yi Jing App & NFT
+/**
+ * @author Stephane Chaunard <linktr.ee/stephanechaunard>
+ * @title images for Yi Jing App & NFT
+ */
 contract YiJingMetadataGenerator is IYiJingBase, Ownable {
     using Strings for uint256;
     using Strings for uint64;
 
-    address public imagesGenerator;
+    address[] private imagesGenerators;
 
-    constructor(address imagesGenerator_) {
-        imagesGenerator = imagesGenerator_;
+    constructor(address imagesGenerator) {
+        imagesGenerators.push(imagesGenerator);
     }
 
     /*/////////////////////////////////////////////////////
                       EXTERNALS FUNCTIONS
     //////////////////////////////////////////////////// */
 
-    /// Retrieve base64 hexagram image for a variation
-    /// @param nftData nft data
-    /// @return string nft metadata
+    /** Get JSON metadata
+     * @param nftData nft data
+     * @return string nft metadata
+     */
     function getJsonMetadata(NftDataExtended memory nftData) external view returns (string memory) {
+        return _getJsonMetadata(nftData, this.getLastVersion());
+    }
+
+    /** Get JSON metadata
+     * @param nftData nft data
+     * @param version start from 0
+     * @return string nft metadata
+     */
+    function getJsonMetadata(
+        NftDataExtended memory nftData,
+        uint256 version
+    ) external view returns (string memory) {
+        require(version <= this.getLastVersion(), "Metadata: wrong version");
+        return _getJsonMetadata(nftData, version);
+    }
+
+    /** Get last version
+     * @return uint256 version
+     */
+    function getLastVersion() external view returns (uint256) {
+        return imagesGenerators.length - 1;
+    }
+
+    /** Set new images generator, older is kept
+     * @param imagesGenerator images generator address
+     * Requirements:
+     * - caller must be owner
+     */
+    function setNewImagesGenerator(address imagesGenerator) public onlyOwner {
+        imagesGenerators.push(imagesGenerator);
+    }
+
+    /*////////////////////////////////////////////////////
+                      INTERNALS FUNCTIONS
+    ////////////////////////////////////////////////////*/
+
+    /** Get JSON metadata
+     * @param nftData nft data
+     * @param version start from 0
+     * @return string nft metadata
+     */
+    function _getJsonMetadata(
+        NftDataExtended memory nftData,
+        uint256 version
+    ) internal view returns (string memory) {
         return
             string.concat(
                 "data:application/json;base64,",
@@ -40,7 +88,9 @@ contract YiJingMetadataGenerator is IYiJingBase, Ownable {
                         _getMetadataDescription(nftData),
                         '",',
                         '"image":"',
-                        IYiJingImagesGenerator(imagesGenerator).getNftImage(nftData.hexagram.lines),
+                        IYiJingImagesGenerator(imagesGenerators[version]).getNftImage(
+                            nftData.hexagram.lines
+                        ),
                         '",',
                         '"background_color":"0f234f",',
                         '"attributes":"',
@@ -51,16 +101,10 @@ contract YiJingMetadataGenerator is IYiJingBase, Ownable {
             );
     }
 
-    function setImagesGenerator(address imagesGenerator_) public onlyOwner {
-        imagesGenerator = imagesGenerator_;
-    }
-
-    /*////////////////////////////////////////////////////
-                      INTERNALS FUNCTIONS
-    ////////////////////////////////////////////////////*/
-    /// Retrieve metadata attributes
-    /// @param nftData nft data
-    /// @return bytes nft metadata attributes
+    /**
+     * @param nftData nft data
+     * @return bytes nft metadata attributes
+     */
     function _getMetadataAttributes(
         NftDataExtended memory nftData
     ) internal pure returns (string memory) {
@@ -72,9 +116,10 @@ contract YiJingMetadataGenerator is IYiJingBase, Ownable {
             );
     }
 
-    /// Retrieve metadata description with information
-    /// @param nftData nft data
-    /// @return bytes nft metadata description
+    /**
+     * @param nftData nft data
+     * @return bytes nft metadata description
+     */
     function _getMetadataDescription(
         NftDataExtended memory nftData
     ) internal pure returns (string memory) {

@@ -7,4 +7,10 @@ import { IYiJingBase } from "src/interface/IYiJingBase.sol";
 /// @title Interface for metadata generator contract
 interface IYiJingMetadataGenerator is IYiJingBase {
     function getJsonMetadata(NftDataExtended memory) external pure returns (string memory);
+
+    function getJsonMetadata(NftDataExtended memory, uint256) external pure returns (string memory);
+
+    function getLastVersion() external pure returns (uint256);
+
+    function setNewImagesGenerator(address) external;
 }

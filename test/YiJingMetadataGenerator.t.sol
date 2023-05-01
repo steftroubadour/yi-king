@@ -3,6 +3,7 @@
 pragma solidity ^0.8.16;
 
 import { BaseTest, Arrays, Bits } from "test/utils/BaseTest.sol";
+import { Base64Std } from "test/utils/Base64Std.sol";
 import { YiJingMetadataGenerator, IYiJingBase } from "src/YiJingMetadataGenerator.sol";
 import { YiJingImagesGenerator } from "src/YiJingImagesGenerator.sol";
 import { Math } from "@openzeppelin/contracts/utils/math/Math.sol";
@@ -46,6 +47,7 @@ contract YiJingMetadataGenerator_internals_test is BaseTest {
 contract YiJingMetadataGenerator_test is BaseTest {
     YiJingMetadataGenerator metadataGenerator;
     YiJingImagesGenerator imagesGenerator;
+    YiJingImagesGenerator imagesGenerator2;
 
     function setUp() public {
         assertTrue(IS_TEST);
@@ -59,10 +61,14 @@ contract YiJingMetadataGenerator_test is BaseTest {
         OWNER = DEPLOYER;
     }
 
-    function testSetImagesGenerator() public {
+    function testSetup() public {
+        assertEq(metadataGenerator.getLastVersion(), 0);
+    }
+
+    function testSetNewImagesGenerator() public {
         vm.prank(OWNER);
-        metadataGenerator.setImagesGenerator(A_CONTRACT);
-        assertEq(metadataGenerator.imagesGenerator(), address(A_CONTRACT));
+        metadataGenerator.setNewImagesGenerator(A_CONTRACT);
+        assertEq(metadataGenerator.getLastVersion(), 1);
     }
 
     function testGetJsonMetadata() public {
@@ -71,13 +77,70 @@ contract YiJingMetadataGenerator_test is BaseTest {
             1,
             IYiJingBase.Hexagram(lines),
             1234567890,
-            false,
-            "",
-            ""
+            true,
+            "123ABC",
+            "encryption method"
         );
 
         string memory metadata = metadataGenerator.getJsonMetadata(nftData);
         assertFalse(isEmptyString(metadata));
         assertEq(slice(1, 29, metadata), "data:application/json;base64,");
+
+        string memory decodedMetadata = string(
+            Base64Std.decode(slice(30, bytes(metadata).length, metadata))
+        );
+        uint startPosition = getPositionStringContained(
+            "data:image/svg+xml;base64,",
+            decodedMetadata
+        ) + 26;
+        string memory encodedImage = slice(
+            startPosition,
+            findFirstCharPositionAfter('"', startPosition, decodedMetadata) - 1,
+            decodedMetadata
+        );
+        assertTrue(isStringContain('"name":"Yi Jing Hexagram #1"', decodedMetadata));
+        assertTrue(
+            isStringContain(
+                '"description":"**encrypted**: true\n**info**: 123ABC\n**helper**: encryption method"',
+                decodedMetadata
+            )
+        );
+
+        // Set another images generator
+        vm.startPrank(OWNER);
+        imagesGenerator2 = new YiJingImagesGenerator();
+        imagesGenerator2.init(address(metadataGenerator));
+        metadataGenerator.setNewImagesGenerator(address(imagesGenerator2));
+        vm.stopPrank();
+
+        assertEq(metadataGenerator.getLastVersion(), 1);
+
+        vm.mockCall(
+            address(imagesGenerator2),
+            abi.encodeWithSelector(imagesGenerator2.getNftImage.selector),
+            abi.encode("data:image/svg+xml;base64,ENCODED_IMAGE")
+        );
+
+        metadata = metadataGenerator.getJsonMetadata(nftData);
+        assertFalse(isEmptyString(metadata));
+        assertEq(slice(1, 29, metadata), "data:application/json;base64,");
+
+        decodedMetadata = string(Base64Std.decode(slice(30, bytes(metadata).length, metadata)));
+        startPosition =
+            getPositionStringContained("data:image/svg+xml;base64,", decodedMetadata) +
+            26;
+        encodedImage = slice(
+            startPosition,
+            findFirstCharPositionAfter('"', startPosition, decodedMetadata) - 1,
+            decodedMetadata
+        );
+        assertTrue(isStringContain('"name":"Yi Jing Hexagram #1"', decodedMetadata));
+        assertTrue(
+            isStringContain(
+                '"description":"**encrypted**: true\n**info**: 123ABC\n**helper**: encryption method"',
+                decodedMetadata
+            )
+        );
+        assertTrue(areStringsEquals(encodedImage, "ENCODED_IMAGE"));
     }
 }

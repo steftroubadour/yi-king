@@ -342,7 +342,7 @@ contract YiJingImagesGenerator is Initializable {
     /// Retrieve base64 image for NFT
     /// @param lines an hexagram is composed by 6 lines defined by a number in the range [0;3]
     /// @return string svg base64 image
-    function getNftImage(uint8[6] memory lines) external view returns (string memory) {
+    function getNftImage(uint8[6] memory lines) external pure returns (string memory) {
         return (
             string.concat(
                 "data:image/svg+xml;base64,",
