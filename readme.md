@@ -8,23 +8,26 @@ A blockchain implementation of I Ching divination.
 
 ![Yi Jing](img/yijing.png)
 
-# Use case
+![nft_image](img/yi-jing.gif)
+
+[dApp on Vercel](https://yi-king-steftroubadour.vercel.app/)
+
+# Description
 Use Blockchain to store information for eternity.
-This information must be easily readable.
-Add possibility to encrypt information would be great.
-Add possibility to upgrade images and retrieve different version.
-Have a low gas fee at mint.
+## Features
+### Smart contracts on EVM
+* written in Solidity for EVM
+* Stored information must be easily readable and **on-the-same-chain**.
+* Contracts, except core NFT contract, must be upgradable
+* Encrypt information
+* Retrieve different image / metadata versions.
+* Have a low gas fee at mint.
+### dApp
+* use [Wagmi](https://wagmi.sh/) & React
+* implement [RainbowKit](https://www.rainbowkit.com/) as wallet connect
 
-# Unresolved problems
-Encryption can't be realised on-chain.
-For example, using elliptic curve consuming to much gas in EVM.
-Solution can be find in other non-EVM blockchains or layers 2.
-
-# Resolved problems
-## Functionalities
 ### NFT ERC-721
 The draw result of I Ching divination is store as an NFT
-
 #### metadata
 * image: animated SVG store on-the-same-chain (not on IPFS or on other chain)
 * message: json with name & question. Can be stored encrypted.
@@ -39,12 +42,14 @@ Possibility to change `getNumbers()` in a new contract.
 Note : random could be render locally.
 #### Support affiliation
 An affiliate must earn revenues publishing
-#### Support non custodial wallet
-Add the possibility to new Blockchain users, to create an account, pay with card & have a non-custodial wallet
-see [web3auth.io](https://web3auth.io)
 
 ### Affiliate integration
 make an easy IFrame integration for any website page.
+
+### Support non custodial wallet
+Add the possibility to new Blockchain users, to create an account, pay with card & have a non-custodial wallet
+see [web3auth.io](https://web3auth.io)
+
 
 ## Tech specifications
 ### Smart contracts
@@ -99,5 +104,8 @@ To save draw, pseudo & question for eternity, we mint an NFT
 ### pseudo & question
 There is no on-chain solution to encrypt data on-chain. 
 By now, solution is to encrypt the message by yourself.
+For example, using elliptic curve consuming to much gas in EVM.
+Solution can be find in other non-EVM blockchains or layers 2.
+
 
 ![nft_image](img/nft_image.png)
