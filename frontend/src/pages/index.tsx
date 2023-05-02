@@ -35,25 +35,23 @@ const { chains, provider } = configureChains(
   chains,
 });*/
 
-const projectId = "Yi Jing App";
-
 const connectors = connectorsForWallets([
   {
     groupName: "Popular",
     wallets: [
       injectedWallet({ chains }),
-      rainbowWallet({ projectId, chains }),
-      metaMaskWallet({ projectId, chains }),
-      coinbaseWallet({ chains, appName: projectId }),
-      walletConnectWallet({ projectId, chains }),
+      rainbowWallet({ chains }),
+      metaMaskWallet({ chains }),
+      coinbaseWallet({ chains, appName: "Yi Jing App" }),
+      walletConnectWallet({ chains }),
     ],
   },
   {
     groupName: "More",
     wallets: [
-      ledgerWallet(projectId, chains),
-      argentWallet(projectId, chains),
-      trustWallet(projectId, chains),
+      ledgerWallet({chains}),
+      argentWallet({chains}),
+      trustWallet({chains}),
     ],
   },
 ]);
