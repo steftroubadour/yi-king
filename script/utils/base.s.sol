@@ -138,19 +138,19 @@ abstract contract Base is Script, Test, StringHelper {
 
     function _getChainAlias() internal view returns (string memory) {
         uint256 chainId = block.chainid;
-        if (chainId == 5) return "goerli";
         if (chainId == 31337) return "anvil";
-        if (chainId == 1) return "mainnet";
+        //if (chainId == 1) return "mainnet";
         if (chainId == 11155111) return "sepolia";
+        if (chainId == 80001) return "mumbai";
 
         revert("Bad network!");
     }
 
     function getChainId(string memory chainAlias) internal pure returns (string memory) {
-        if (areStringsEquals(chainAlias, "goerli")) return "5";
         if (areStringsEquals(chainAlias, "anvil")) return "31337";
-        if (areStringsEquals(chainAlias, "mainnet")) return "1";
+        //if (areStringsEquals(chainAlias, "mainnet")) return "1";
         if (areStringsEquals(chainAlias, "sepolia")) return "11155111";
+        if (areStringsEquals(chainAlias, "mumbai")) return "80001";
 
         revert("Bad network!");
     }

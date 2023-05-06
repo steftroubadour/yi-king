@@ -1,20 +1,25 @@
 {
-  "11155111": {
-    "chainName": "sepolia",
-    "contractAddress": "0x57D1988Ae830f47b8a590D62fC22F34C378616Ad",
-    "deployer": "0x45f6e37A97aA1C6b852FBf3581C3a3730eAA7145"
-  },
   "31337": {
     "chainName": "anvil",
-    "deployer": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
-    "contractAddress": "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9"
+    "contractAddress": "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
+    "deployer": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+  },
+  "11155111": {
+    "contractAddress": "0x57D1988Ae830f47b8a590D62fC22F34C378616Ad",
+    "deployer": "0x45f6e37A97aA1C6b852FBf3581C3a3730eAA7145",
+    "chainName": "sepolia"
+  },
+  "80001": {
+    "contractAddress": "0x52B48420f00B0bCD585C5169dF7A6c1aBd2046E1",
+    "chainName": "mumbai",
+    "deployer": "0x45f6e37A97aA1C6b852FBf3581C3a3730eAA7145"
   },
   "contractAbi": [
     {
       "inputs": [
         {
           "internalType": "address",
-          "name": "imagesGenerator_",
+          "name": "imagesGenerator",
           "type": "address"
         }
       ],
@@ -99,13 +104,76 @@
       "type": "function"
     },
     {
-      "inputs": [],
-      "name": "imagesGenerator",
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint8[6]",
+                  "name": "lines",
+                  "type": "uint8[6]"
+                }
+              ],
+              "internalType": "struct IYiJingBase.Hexagram",
+              "name": "hexagram",
+              "type": "tuple"
+            },
+            {
+              "internalType": "uint64",
+              "name": "date",
+              "type": "uint64"
+            },
+            {
+              "internalType": "bool",
+              "name": "encrypted",
+              "type": "bool"
+            },
+            {
+              "internalType": "string",
+              "name": "info",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "encryptionHelperMessage",
+              "type": "string"
+            }
+          ],
+          "internalType": "struct IYiJingBase.NftDataExtended",
+          "name": "nftData",
+          "type": "tuple"
+        },
+        {
+          "internalType": "uint256",
+          "name": "version",
+          "type": "uint256"
+        }
+      ],
+      "name": "getJsonMetadata",
       "outputs": [
         {
-          "internalType": "address",
+          "internalType": "string",
           "name": "",
-          "type": "address"
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getLastVersion",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
         }
       ],
       "stateMutability": "view",
@@ -135,11 +203,11 @@
       "inputs": [
         {
           "internalType": "address",
-          "name": "imagesGenerator_",
+          "name": "imagesGenerator",
           "type": "address"
         }
       ],
-      "name": "setImagesGenerator",
+      "name": "setNewImagesGenerator",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"

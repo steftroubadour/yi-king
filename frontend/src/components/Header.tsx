@@ -60,7 +60,7 @@ export default function WithSubNavigation() {
 
             <Logo />
             <Heading size={{ base: "md", md: "lg" }} color={useColorModeValue("gray.800", "white")}>
-              Yi Jing
+              Yi Jing on-chain !
             </Heading>
             <Box display={{ base: "block", md: "none" }}>
               <ConnectButton

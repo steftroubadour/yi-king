@@ -80,11 +80,11 @@ To share benefits from mint with affiliated
 ### Polygon Testnet Mumbai (80001)
 | Contract Name | Address                                    |
 |---------------|--------------------------------------------|
-| NFT           | 0x |
-| Metadata      | 0x |
-| Image         | 0x |
-| Affiliation   | 0x |
-| Random        | 0x |
+| NFT           | 0x57D1988Ae830f47b8a590D62fC22F34C378616Ad |
+| Metadata      | 0x52B48420f00B0bCD585C5169dF7A6c1aBd2046E1 |
+| Image         | 0x5045B684544065099538f65Fa7aaf62A95a6e198 |
+| Affiliation   | 0x9283f9Fe8F2C41A852eA33a5931CB1544DB30aef |
+| Random        | 0x62Fc8D934Af9906DD7b22a8704e56a227Eb7766D |
 
 # FLOW
 ## Random draw, first hexagram
@@ -106,6 +106,14 @@ There is no on-chain solution to encrypt data on-chain.
 By now, solution is to encrypt the message by yourself.
 For example, using elliptic curve consuming to much gas in EVM.
 Solution can be find in other non-EVM blockchains or layers 2.
+
+You can mint on Sepolia and Mumbai testnets
+
+Get free tokens to test:
+
+https://sepoliafaucet.com/
+
+https://mumbaifaucet.com/
 
 
 ![nft_image](img/nft_image.png)

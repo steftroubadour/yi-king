@@ -1,13 +1,18 @@
 {
-  "11155111": {
-    "chainName": "sepolia",
-    "contractAddress": "0x52B48420f00B0bCD585C5169dF7A6c1aBd2046E1",
-    "deployer": "0x45f6e37A97aA1C6b852FBf3581C3a3730eAA7145"
-  },
   "31337": {
     "chainName": "anvil",
-    "deployer": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
-    "contractAddress": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0"
+    "contractAddress": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
+    "deployer": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+  },
+  "11155111": {
+    "contractAddress": "0x52B48420f00B0bCD585C5169dF7A6c1aBd2046E1",
+    "deployer": "0x45f6e37A97aA1C6b852FBf3581C3a3730eAA7145",
+    "chainName": "sepolia"
+  },
+  "80001": {
+    "contractAddress": "0x9283f9Fe8F2C41A852eA33a5931CB1544DB30aef",
+    "chainName": "mumbai",
+    "deployer": "0x45f6e37A97aA1C6b852FBf3581C3a3730eAA7145"
   },
   "contractAbi": [
     {

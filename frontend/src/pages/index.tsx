@@ -23,7 +23,8 @@ import {
 import App from "../components/App";
 
 const { chains, provider } = configureChains(
-  [sepolia, polygon, polygonMumbai, foundry] as Chain[],
+  [sepolia, polygonMumbai] as Chain[],
+  //[sepolia, polygon, polygonMumbai, foundry] as Chain[],
   [
     //alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_ID! }),
     publicProvider(),
@@ -40,18 +41,18 @@ const connectors = connectorsForWallets([
     groupName: "Popular",
     wallets: [
       injectedWallet({ chains }),
-      rainbowWallet({ chains }),
       metaMaskWallet({ chains }),
-      coinbaseWallet({ chains, appName: "Yi Jing App" }),
       walletConnectWallet({ chains }),
     ],
   },
   {
     groupName: "More",
     wallets: [
-      ledgerWallet({chains}),
-      argentWallet({chains}),
-      trustWallet({chains}),
+      ledgerWallet({ chains }),
+      argentWallet({ chains }),
+      trustWallet({ chains }),
+      rainbowWallet({ chains }),
+      coinbaseWallet({ chains, appName: "Yi Jing App" }),
     ],
   },
 ]);

@@ -1,0 +1,25 @@
+{
+  "contracts": {
+    "YiJingMetadataGenerator": "0x52B48420f00B0bCD585C5169dF7A6c1aBd2046E1",
+    "YiJingRandom": "0x62Fc8D934Af9906DD7b22a8704e56a227Eb7766D",
+    "YiJingImagesGenerator": "0x5045B684544065099538f65Fa7aaf62A95a6e198",
+    "YiJingNft": "0x57D1988Ae830f47b8a590D62fC22F34C378616Ad",
+    "Affiliation": "0x9283f9Fe8F2C41A852eA33a5931CB1544DB30aef"
+  },
+  "chainAlias": "mumbai",
+  "contractsNames": [
+    "YiJingRandom",
+    "YiJingImagesGenerator",
+    "Affiliation",
+    "YiJingMetadataGenerator",
+    "YiJingNft"
+  ],
+  "chainId": 80001,
+  "setup": {
+    "contracts_owner": "0x45f6e37A97aA1C6b852FBf3581C3a3730eAA7145",
+    "deployment_tests_valid": true,
+    "nft_is_paused": false,
+    "mint_price": "0.0010 ETH",
+    "deployer": "0x45f6e37A97aA1C6b852FBf3581C3a3730eAA7145"
+  }
+}

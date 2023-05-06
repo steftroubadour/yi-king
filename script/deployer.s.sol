@@ -5,7 +5,7 @@ import "./utils/recorder.s.sol";
 
 contract Deployer is Recorder {
     string internal networkAlias;
-    string[] chainsAliasForFrontend = ["anvil", "sepolia"];
+    string[] chainsAliasForFrontend = ["anvil", "sepolia", "mumbai"];
 
     function run() public {
         // init path record and set alias network name

@@ -104,8 +104,13 @@ export default function RandomForm({ setDraw, setInfo }: { setDraw: any; setInfo
 
     if (isConnected) {
       return (
-        <Button isDisabled={blockNumberDraw === blockNumber} onClick={enableUseContractReadHook}>
-          Hexagram (#{blockNumber}@{sepolia.name})
+        <Button
+          isDisabled={blockNumberDraw === blockNumber}
+          onClick={enableUseContractReadHook}
+          colorScheme="blue"
+        >
+          Get your Hexagram
+          {/*Hexagram (#{blockNumber}@{sepolia.name})*/}
         </Button>
       );
     }
@@ -128,9 +133,11 @@ export default function RandomForm({ setDraw, setInfo }: { setDraw: any; setInfo
     <>
       <VStack justify="center" flex={{ base: 1, md: "auto" }} mb="10">
         <Box>
-          <Heading>Parameters</Heading>
+          <Heading my={6}>
+            {isConnected ? "Enter your name and your question" : "First connect your wallet"}
+          </Heading>
           {inputs.map(({ label, input }) => (
-            <Box key={label} className="form-group mb-3">
+            <Box key={label} className="form-group" mb={3}>
               <InputGroup>
                 <InputLeftAddon children={label} />
                 <Input

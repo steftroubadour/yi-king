@@ -152,11 +152,15 @@ export default function MintForm({
 
     if (isConnected) {
       if (!validated) {
-        return <Button onClick={() => setValidated(true)}>Validate</Button>;
+        return (
+          <Button onClick={() => setValidated(true)} colorScheme="blue">
+            Validate
+          </Button>
+        );
       }
 
       return (
-        <Button onClick={() => setWrite(true)}>
+        <Button onClick={() => setWrite(true)} colorScheme="blue">
           {isMinting ? (
             <SpinnerIcon />
           ) : minted ? (
@@ -269,7 +273,7 @@ export default function MintForm({
 
           <Center>{renderButton()}</Center>
         </Box>
-        <Button hidden={!draw || isOpen} onClick={onOpen}>
+        <Button hidden={!draw || isOpen} onClick={onOpen} colorScheme="blue">
           Save data on Blockchain
         </Button>
       </VStack>
