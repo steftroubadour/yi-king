@@ -72,19 +72,19 @@ To share benefits from mint with affiliated
 ### Ethereum Testnet Sepolia (11155111)
 | Contract Name | Address                                    |
 |---------------|--------------------------------------------|
-| NFT           | 0x1f809D18347dCa1d52A3a0a29a72ec6966f87456 |
-| Metadata      | 0x57D1988Ae830f47b8a590D62fC22F34C378616Ad |
-| Image         | 0x9283f9Fe8F2C41A852eA33a5931CB1544DB30aef |
-| Affiliation   | 0x52B48420f00B0bCD585C5169dF7A6c1aBd2046E1 |
-| Random        | 0x5045B684544065099538f65Fa7aaf62A95a6e198 |
+| NFT           | 0x58e966f7CB649806cAE4135e32f5842A0Dc8a034 |
+| Metadata      | 0x8C7b569CfECc0264CDFB1590B66bf990B7B86Bc9 |
+| Image         | 0xEdFcEF085C78592Efc0E361540c42A6583C3673A |
+| Affiliation   | 0x799d2d814f39727966a59461f4A7c4630AD7eCC2 |
+| Random        | 0x267e415EBa5a62929F01c758503B0668E03A99D8 |
 ### Polygon Testnet Mumbai (80001)
 | Contract Name | Address                                    |
 |---------------|--------------------------------------------|
-| NFT           | 0x57D1988Ae830f47b8a590D62fC22F34C378616Ad |
-| Metadata      | 0x52B48420f00B0bCD585C5169dF7A6c1aBd2046E1 |
-| Image         | 0x5045B684544065099538f65Fa7aaf62A95a6e198 |
-| Affiliation   | 0x9283f9Fe8F2C41A852eA33a5931CB1544DB30aef |
-| Random        | 0x62Fc8D934Af9906DD7b22a8704e56a227Eb7766D |
+| NFT           | 0x33a0FD74321dD4EA3db91277AEf379cd297191ed |
+| Metadata      | 0x58e966f7CB649806cAE4135e32f5842A0Dc8a034 |
+| Image         | 0x799d2d814f39727966a59461f4A7c4630AD7eCC2 |
+| Affiliation   | 0x8C7b569CfECc0264CDFB1590B66bf990B7B86Bc9 |
+| Random        | 0xEdFcEF085C78592Efc0E361540c42A6583C3673A |
 
 # FLOW
 ## Random draw, first hexagram

@@ -26,8 +26,9 @@ polygon = "https://polygon-mainnet-rpc.allthatnode.com:8545"
 mumbai = "https://polygon-mumbai.g.alchemy.com/v2/${ALCHEMY_POLYGON_MUMBAI}"
 
 [etherscan]
-goerli = { key = "${ETHERSCAN_KEY}" }
-sepolia = { key = "${ETHERSCAN_KEY}" }
+mumbai = { key = "${POLYGONSCAN_API_KEY}" }
+#mumbai = { key = "${POLYGONSCAN_API_KEY}", url = "https://api-testnet.polygonscan.com"}
+sepolia = { key = "${ETHERSCAN_API_KEY}" }
 
 [fuzz]
 runs = 256

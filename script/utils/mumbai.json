@@ -1,12 +1,12 @@
 {
-  "contracts": {
-    "YiJingMetadataGenerator": "0x52B48420f00B0bCD585C5169dF7A6c1aBd2046E1",
-    "YiJingRandom": "0x62Fc8D934Af9906DD7b22a8704e56a227Eb7766D",
-    "YiJingImagesGenerator": "0x5045B684544065099538f65Fa7aaf62A95a6e198",
-    "YiJingNft": "0x57D1988Ae830f47b8a590D62fC22F34C378616Ad",
-    "Affiliation": "0x9283f9Fe8F2C41A852eA33a5931CB1544DB30aef"
+  "setup": {
+    "deployer": "0x45f6e37A97aA1C6b852FBf3581C3a3730eAA7145",
+    "contracts_owner": "0x45f6e37A97aA1C6b852FBf3581C3a3730eAA7145",
+    "mint_price": "0.0010 ETH",
+    "nft_is_paused": false,
+    "deployment_tests_valid": true
   },
-  "chainAlias": "mumbai",
+  "chainId": 80001,
   "contractsNames": [
     "YiJingRandom",
     "YiJingImagesGenerator",
@@ -14,12 +14,12 @@
     "YiJingMetadataGenerator",
     "YiJingNft"
   ],
-  "chainId": 80001,
-  "setup": {
-    "contracts_owner": "0x45f6e37A97aA1C6b852FBf3581C3a3730eAA7145",
-    "deployment_tests_valid": true,
-    "nft_is_paused": false,
-    "mint_price": "0.0010 ETH",
-    "deployer": "0x45f6e37A97aA1C6b852FBf3581C3a3730eAA7145"
-  }
+  "contracts": {
+    "YiJingMetadataGenerator": "0x58e966f7CB649806cAE4135e32f5842A0Dc8a034",
+    "YiJingNft": "0x33a0FD74321dD4EA3db91277AEf379cd297191ed",
+    "Affiliation": "0x8C7b569CfECc0264CDFB1590B66bf990B7B86Bc9",
+    "YiJingImagesGenerator": "0x799d2d814f39727966a59461f4A7c4630AD7eCC2",
+    "YiJingRandom": "0xEdFcEF085C78592Efc0E361540c42A6583C3673A"
+  },
+  "chainAlias": "mumbai"
 }
