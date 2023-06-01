@@ -93,9 +93,9 @@ contract YiJingMetadataGenerator is IYiJingBase, Ownable {
                         ),
                         '",',
                         '"background_color":"0f234f",',
-                        '"attributes":"',
+                        '"attributes":',
                         _getMetadataAttributes(nftData),
-                        '"}'
+                        "}"
                     )
                 )
             );
@@ -125,11 +125,11 @@ contract YiJingMetadataGenerator is IYiJingBase, Ownable {
     ) internal pure returns (string memory) {
         return
             string.concat(
-                "**encrypted**: ",
+                "Your reading information<br> **encrypted**: ",
                 nftData.encrypted ? "true" : "false",
-                "\n**info**: ",
+                "<br> **info**: ",
                 nftData.info,
-                "\n**helper**: ",
+                "<br> **helper**: ",
                 nftData.encryptionHelperMessage
             );
     }
