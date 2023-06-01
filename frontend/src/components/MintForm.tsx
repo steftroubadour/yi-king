@@ -20,7 +20,6 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { CheckCircleIcon, SpinnerIcon } from "@chakra-ui/icons";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
 import YiJingNft from "@/contracts/YiJingNft.json";
 
 export default function MintForm({
@@ -175,7 +174,8 @@ export default function MintForm({
       );
     }
     return (
-      <ConnectButton
+      <></>
+      /*<ConnectButton
         accountStatus={{
           smallScreen: "avatar",
           largeScreen: "full",
@@ -184,7 +184,7 @@ export default function MintForm({
           smallScreen: "none",
           largeScreen: "full",
         }}
-      />
+      />*/
     );
   }
 

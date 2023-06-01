@@ -19,7 +19,7 @@ import {
 } from "@chakra-ui/react";
 import { ChevronDownIcon, ChevronRightIcon, CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
 import { Logo } from "@/components/Logo";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
+import Profile from "@/components/Profile";
 
 export default function WithSubNavigation() {
   const { isOpen, onToggle } = useDisclosure();
@@ -63,17 +63,7 @@ export default function WithSubNavigation() {
               Yi Jing on-chain !
             </Heading>
             <Box display={{ base: "block", md: "none" }}>
-              <ConnectButton
-                accountStatus={{
-                  smallScreen: "avatar",
-                  largeScreen: "full",
-                }}
-                chainStatus={{
-                  smallScreen: "none",
-                  largeScreen: "full",
-                }}
-                label="🔘"
-              />
+              <Profile />
             </Box>
             <DesktopNav />
           </HStack>
@@ -83,16 +73,7 @@ export default function WithSubNavigation() {
             minWidth={"max-content"}
             pr={"20"}
           >
-            <ConnectButton
-              accountStatus={{
-                smallScreen: "avatar",
-                largeScreen: "full",
-              }}
-              chainStatus={{
-                smallScreen: "none",
-                largeScreen: "full",
-              }}
-            />
+            <Profile />
           </Box>
         </HStack>
 
@@ -189,7 +170,7 @@ const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
 const MobileNav = () => {
   return (
     <Stack bg={useColorModeValue("white", "gray.800")} p={4} display={{ md: "none" }}>
-      <ConnectButton chainStatus={"full"} />
+      <Profile />
       {NAV_ITEMS.map((navItem) => (
         <MobileNavItem key={navItem.label} {...navItem} />
       ))}

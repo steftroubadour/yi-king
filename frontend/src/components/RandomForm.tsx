@@ -4,7 +4,8 @@ import { useAccount, useBlockNumber, useContractRead, useNetwork } from "wagmi";
 import YiJingRandom from "@/contracts/YiJingRandom.json";
 import { Box, Button, Heading, Input, InputGroup, InputLeftAddon, VStack } from "@chakra-ui/react";
 import { sepolia, foundry } from "wagmi/chains";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
+
+import Profile from "@/components/Profile";
 
 // Form to Mint NFT w/encrypted description
 export default function RandomForm({ setDraw, setInfo }: { setDraw: any; setInfo: any }) {
@@ -115,18 +116,7 @@ export default function RandomForm({ setDraw, setInfo }: { setDraw: any; setInfo
       );
     }
 
-    return (
-      <ConnectButton
-        accountStatus={{
-          smallScreen: "avatar",
-          largeScreen: "full",
-        }}
-        chainStatus={{
-          smallScreen: "none",
-          largeScreen: "full",
-        }}
-      />
-    );
+    return <Profile />;
   }
 
   return (
