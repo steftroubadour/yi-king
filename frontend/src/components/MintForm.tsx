@@ -102,7 +102,7 @@ export default function MintForm({
         hexagram: { lines: draw },
         date: form.date,
         encrypted: false,
-        info: JSON.stringify(info),
+        info: JSON.stringify(info).replace(/"/g, "*"),
         encryptionHelperMessage: "",
       },
       ethers.constants.AddressZero,

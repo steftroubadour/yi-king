@@ -26,3 +26,6 @@ svg
 
 # IDE
 .idea
+
+# dev files
+unused_contracts
