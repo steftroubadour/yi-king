@@ -11,10 +11,10 @@ import { Affiliation } from "src/Affiliation.sol";
 import { IAffiliation } from "src/interface/IAffiliation.sol";
 
 contract YiJingNft_test is BaseTest {
-    Affiliation affiliation;
-    YiJingNft nft;
-    YiJingImagesGenerator imagesGenerator;
-    YiJingMetadataGenerator metadataGenerator;
+    Affiliation internal affiliation;
+    YiJingNft internal nft;
+    YiJingImagesGenerator internal imagesGenerator;
+    YiJingMetadataGenerator internal metadataGenerator;
 
     function setUp() public {
         assertTrue(IS_TEST);
@@ -72,10 +72,11 @@ contract YiJingNft_test is BaseTest {
             decodedMetadata
         );
 
+        emit log_named_string("YiJingNft_test", "testModifyEncryptedInfo");
         assertTrue(isStringContain('"name":"Yi Jing Hexagram #1"', decodedMetadata));
         assertTrue(
             isStringContain(
-                '"description":"**encrypted**: true\n**info**: 123ABC\n**helper**: private key"',
+                '"description":"Your reading information<br> **encrypted**: true<br> **info**: 123ABC<br> **helper**: private key"',
                 decodedMetadata
             )
         );
@@ -103,7 +104,7 @@ contract YiJingNft_test is BaseTest {
         assertTrue(isStringContain('"name":"Yi Jing Hexagram #1"', newDecodedMetadata));
         assertTrue(
             isStringContain(
-                '"description":"**encrypted**: true\n**info**: 123AZE\n**helper**: an helper message"',
+                '"description":"Your reading information<br> **encrypted**: true<br> **info**: 123AZE<br> **helper**: an helper message"',
                 newDecodedMetadata
             )
         );
@@ -225,13 +226,13 @@ contract YiJingNft_test is BaseTest {
         assertTrue(isStringContain('"name":"Yi Jing Hexagram #1"', decodedMetadata));
         assertTrue(
             isStringContain(
-                '"description":"**encrypted**: true\n**info**: 123ABC\n**helper**: private key"',
+                '"description":"Your reading information<br> **encrypted**: true<br> **info**: 123ABC<br> **helper**: private key"',
                 decodedMetadata
             )
         );
         assertTrue(
             isStringContain(
-                '"attributes":"[{"display_type":"date","trait_type":"Created","value":1234567890}]"}',
+                '"attributes":[{"display_type":"date","trait_type":"Created","value":1234567890}]}',
                 decodedMetadata
             )
         );

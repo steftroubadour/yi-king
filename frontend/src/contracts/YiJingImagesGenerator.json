@@ -1,8 +1,18 @@
 {
-  "11155111": {
-    "contractAddress": "0xEdFcEF085C78592Efc0E361540c42A6583C3673A",
+  "31337": {
+    "deployer": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+    "chainName": "anvil",
+    "contractAddress": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
+  },
+  "80001": {
+    "contractAddress": "0x73EfB550291788CA9026dd52F761fDE37b41f6F6",
     "deployer": "0x45f6e37A97aA1C6b852FBf3581C3a3730eAA7145",
-    "chainName": "sepolia"
+    "chainName": "mumbai"
+  },
+  "11155111": {
+    "chainName": "sepolia",
+    "contractAddress": "0x5863680f7C7EfF27eaEE484A31C6643038B0b177",
+    "deployer": "0x45f6e37A97aA1C6b852FBf3581C3a3730eAA7145"
   },
   "contractAbi": [
     {
@@ -151,15 +161,5 @@
       "stateMutability": "nonpayable",
       "type": "function"
     }
-  ],
-  "31337": {
-    "chainName": "anvil",
-    "deployer": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
-    "contractAddress": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
-  },
-  "80001": {
-    "contractAddress": "0x799d2d814f39727966a59461f4A7c4630AD7eCC2",
-    "chainName": "mumbai",
-    "deployer": "0x45f6e37A97aA1C6b852FBf3581C3a3730eAA7145"
-  }
+  ]
 }

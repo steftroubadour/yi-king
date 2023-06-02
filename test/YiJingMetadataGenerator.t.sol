@@ -45,9 +45,9 @@ contract YiJingMetadataGenerator_internals_test is BaseTest {
 }
 
 contract YiJingMetadataGenerator_test is BaseTest {
-    YiJingMetadataGenerator metadataGenerator;
-    YiJingImagesGenerator imagesGenerator;
-    YiJingImagesGenerator imagesGenerator2;
+    YiJingMetadataGenerator internal metadataGenerator;
+    YiJingImagesGenerator internal imagesGenerator;
+    YiJingImagesGenerator internal imagesGenerator2;
 
     function setUp() public {
         assertTrue(IS_TEST);
@@ -101,7 +101,7 @@ contract YiJingMetadataGenerator_test is BaseTest {
         assertTrue(isStringContain('"name":"Yi Jing Hexagram #1"', decodedMetadata));
         assertTrue(
             isStringContain(
-                '"description":"**encrypted**: true\n**info**: 123ABC\n**helper**: encryption method"',
+                '"description":"Your reading information<br> **encrypted**: true<br> **info**: 123ABC<br> **helper**: encryption method"',
                 decodedMetadata
             )
         );
@@ -137,7 +137,7 @@ contract YiJingMetadataGenerator_test is BaseTest {
         assertTrue(isStringContain('"name":"Yi Jing Hexagram #1"', decodedMetadata));
         assertTrue(
             isStringContain(
-                '"description":"**encrypted**: true\n**info**: 123ABC\n**helper**: encryption method"',
+                '"description":"Your reading information<br> **encrypted**: true<br> **info**: 123ABC<br> **helper**: encryption method"',
                 decodedMetadata
             )
         );

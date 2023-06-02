@@ -49,11 +49,20 @@ export default function MintForm({
   const { chain } = useNetwork();
   const { address, isConnected } = useAccount();
 
+  const infoToString = (info: any) => {
+    return JSON.stringify(info)
+      .replace(/"/g, "*")
+      .replace("{", "")
+      .replace("}", "")
+      .replace(/:/g, ": ")
+      .replace(",", " | ");
+  };
+
   const [form, setForm] = useState<Form>({
-    info: JSON.stringify(info),
+    info: infoToString(info),
     isEncrypted: false,
     encryptionHelperMessage: "",
-    infoBackup: JSON.stringify(info),
+    infoBackup: infoToString(info),
     date: new Date().getTime(),
   } as FormState);
   const [validated, setValidated] = useState<boolean>(false);
@@ -102,7 +111,7 @@ export default function MintForm({
         hexagram: { lines: draw },
         date: form.date,
         encrypted: false,
-        info: JSON.stringify(info).replace(/"/g, "*"),
+        info: infoToString(info),
         encryptionHelperMessage: "",
       },
       ethers.constants.AddressZero,
