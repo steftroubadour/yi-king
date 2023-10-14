@@ -7,8 +7,11 @@ import {
 } from "@rainbow-me/rainbowkit";
 import { CreateClientConfig, configureChains, createClient, WagmiConfig } from "wagmi";
 import { Chain, sepolia, foundry, polygon, polygonMumbai } from "wagmi/chains";
-import { alchemyProvider } from "wagmi/providers/alchemy";
-import { publicProvider } from "wagmi/providers/public";
+//import { alchemyProvider } from "wagmi/providers/alchemy";
+import { infuraProvider } from "wagmi/providers/infura";
+//import { publicProvider } from "wagmi/providers/public";
+//import { jsonRpcProvider } from "@wagmi/core/providers/jsonRpc";
+
 import {
   injectedWallet,
   rainbowWallet,
@@ -22,14 +25,11 @@ import {
 
 import App from "../components/App";
 
-const { chains, provider } = configureChains(
-  [sepolia, polygonMumbai] as Chain[],
-  //[sepolia, polygon, polygonMumbai, foundry] as Chain[],
-  [
-    //alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_ID! }),
-    publicProvider(),
-  ]
-);
+const { chains, provider } = configureChains([sepolia, polygonMumbai] as Chain[], [
+  infuraProvider({ apiKey: process.env.NEXT_PUBLIC_INFURA_API_KEY! }),
+  //alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_ID! }),
+  //publicProvider(),
+]);
 
 /*const { connectors } = getDefaultWallets({
   appName: "Yi Jing App",
